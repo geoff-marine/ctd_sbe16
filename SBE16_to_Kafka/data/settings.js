@@ -24,9 +24,9 @@ process.env.DEVICE_TOPIC = "";
 process.env.DEVICE_COMMAND_PORT = "49153";
 process.env.CSV_CONFIG = "https://raw.githubusercontent.com/geoff-marine/ctd_sbe16/master/SBE_CONFIG/sbe16_config.csv"
 process.env.CSV_COMMAND_CONFIG = "https://raw.githubusercontent.com/geoff-marine/ctd_sbe16/master/SBE_CONFIG/sbe16_config.txt"
-process.env.KAFKA_PRODUCER_HOST = "";
+process.env.KAFKA_PRODUCER_HOST = "10.11.1.30";
 process.env.KAFKA_PRODUCER_PORT = "";
-process.env.KAFKA_PRODUCER_TOPIC = "";
+process.env.KAFKA_PRODUCER_TOPIC = "moxa-nodered";
 process.env.KAFKA_CONSUMER_TOPIC = "";
 
 
