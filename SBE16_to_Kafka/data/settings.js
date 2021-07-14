@@ -18,11 +18,11 @@
 // to make it available:
 var fs = require("fs");
 
-process.env.DEVICE_SERVER = "172.16.255.5";
-process.env.DEVICE_PORT = "950";
-process.env.DEVICE_COMMAND_PORT = "966";
-process.env.CSV_CONFIG = "https://raw.githubusercontent.com/IrishMarineInstitute/uwobs/master/common/apps/ctd_config.csv"
-process.env.CSV_COMMAND_CONFIG = "https://raw.githubusercontent.com/IrishMarineInstitute/uwobs/master/common/apps/ctd_config.txt"
+process.env.DEVICE_SERVER = "172.18.0.2";
+process.env.DEVICE_PORT = "49152";
+process.env.DEVICE_COMMAND_PORT = "49153";
+process.env.CSV_CONFIG = "https://raw.githubusercontent.com/geoff-marine/ctd_sbe16/master/SBE_CONFIG/sbe16_config.csv"
+process.env.CSV_COMMAND_CONFIG = "https://raw.githubusercontent.com/geoff-marine/ctd_sbe16/master/SBE_CONFIG/sbe16_config.txt"
 
 module.exports = {
     // the tcp port that the Node-RED web server is listening on
