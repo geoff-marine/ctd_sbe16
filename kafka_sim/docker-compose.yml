@@ -1,5 +1,5 @@
 ---
-  version: '3.5'
+  version: '2'
   services:
     zookeeper:
       image: confluentinc/cp-zookeeper:6.2.0
@@ -175,9 +175,4 @@
         KAFKA_REST_HOST_NAME: rest-proxy
         KAFKA_REST_BOOTSTRAP_SERVERS: 'broker:29092'
         KAFKA_REST_LISTENERS: "http://0.0.0.0:8082"
-        KAFKA_REST_SCHEMA_REGISTRY_URL: 'http://schema-registry:8081'
-  
-  networks:
-    default:
-      external: true
-      name: sbe16      
+        KAFKA_REST_SCHEMA_REGISTRY_URL: 'http://schema-registry:8081'        
