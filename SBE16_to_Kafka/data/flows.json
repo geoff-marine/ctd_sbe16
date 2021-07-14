@@ -17,7 +17,7 @@
         "datamode": "stream",
         "datatype": "utf8",
         "newline": "\\n",
-        "topic": "spiddal-ctd",
+        "topic": "${DEVICE_TOPIC}",
         "base64": false,
         "x": 270,
         "y": 120,
@@ -62,9 +62,9 @@
         "id": "7818e38c.25462c",
         "type": "Kafka Producer",
         "z": "77c7c30f.0fd61c",
-        "name": "kafka:spiddal-ctd",
+        "name": "kafka:${KAFKA_PRODUCER_TOPIC}",
         "broker": "c7885260.5b223",
-        "topic": "spiddal-ctd",
+        "topic": "${KAFKA_PRODUCER_TOPIC}",
         "requireAcks": 1,
         "ackTimeoutMs": 100,
         "partitionerType": 0,
@@ -116,11 +116,11 @@
         "id": "62d2148c.a71b5c",
         "type": "Kafka Consumer",
         "z": "77c7c30f.0fd61c",
-        "name": "kafka:spiddal-ctd",
+        "name": "kafka:${KAFKA_CONSUMER_TOPIC}",
         "broker": "c7885260.5b223",
         "topics": [
             {
-                "topic": "spiddal-ctd",
+                "topic": "${KAFKA_CONSUMER_TOPIC}",
                 "offset": 0,
                 "partition": 0
             }
@@ -476,11 +476,11 @@
         "id": "c7885260.5b223",
         "type": "Kafka Broker",
         "z": "",
-        "name": "kafka gconode05",
+        "name": "${KAFKA_PRODUCER_HOST}",
         "hosts": [
             {
-                "host": "gconode05",
-                "port": 9092
+                "host": "${KAFKA_PRODUCER_HOST}",
+                "port": "${KAFKA_PRODUCER_PORT}"
             }
         ],
         "hostsEnvVar": "",
