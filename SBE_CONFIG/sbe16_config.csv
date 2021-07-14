@@ -1,2 +1,2 @@
 reference,type,manufacturer,id,moxa_server,moxa_port,moxa_command_port,configure_on_startup,start_date,end_date
-ctd1, ctd, sea-bird, 4239
+ctd1, ctd, sea-bird, 4239, 172.18.0.2, 49152, 49153, true, 2021-07-14TT09:00:00Z,
