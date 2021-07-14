@@ -1,0 +1,505 @@
+[
+    {
+        "id": "77c7c30f.0fd61c",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "80019f2d.9dd3f",
+        "type": "tcp in",
+        "z": "77c7c30f.0fd61c",
+        "name": "MOXA SWITCH",
+        "server": "client",
+        "host": "${DEVICE_SERVER}",
+        "port": "${DEVICE_PORT}",
+        "datamode": "stream",
+        "datatype": "utf8",
+        "newline": "\\n",
+        "topic": "spiddal-ctd",
+        "base64": false,
+        "x": 270,
+        "y": 120,
+        "wires": [
+            [
+                "addf79e2.df5538",
+                "f65da627.d136d8"
+            ]
+        ]
+    },
+    {
+        "id": "c319188c.7a1c88",
+        "type": "debug",
+        "z": "77c7c30f.0fd61c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 1790,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "addf79e2.df5538",
+        "type": "function",
+        "z": "77c7c30f.0fd61c",
+        "name": "Add device and timestamp",
+        "func": "let config = flow.get(\"config\");\nif(!config){\n    console.log(\"config is not set, this won't work\")\n}\nlet device = config.id;\n\nlet parts = [new Date().toISOString(),device,(\"\"+msg.payload).trim()];\nmsg.payload = parts.join(\"|\");\nflow.set('latest',{payload:msg.payload,time:new Date().getTime()});\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 570,
+        "y": 220,
+        "wires": [
+            [
+                "7818e38c.25462c"
+            ]
+        ]
+    },
+    {
+        "id": "7818e38c.25462c",
+        "type": "Kafka Producer",
+        "z": "77c7c30f.0fd61c",
+        "name": "kafka:spiddal-ctd",
+        "broker": "c7885260.5b223",
+        "topic": "spiddal-ctd",
+        "requireAcks": 1,
+        "ackTimeoutMs": 100,
+        "partitionerType": 0,
+        "key": "",
+        "partition": 0,
+        "attributes": 0,
+        "connectionType": "Producer",
+        "x": 890,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "b1026f4e.34638",
+        "type": "trigger",
+        "z": "77c7c30f.0fd61c",
+        "op1": "",
+        "op2": "0",
+        "op1type": "nul",
+        "op2type": "str",
+        "duration": "5",
+        "extend": true,
+        "units": "min",
+        "reset": "",
+        "bytopic": "all",
+        "name": "Trigger if no data for 5 minutes",
+        "x": 490,
+        "y": 420,
+        "wires": [
+            [
+                "c89d53a6.6c49c"
+            ]
+        ]
+    },
+    {
+        "id": "c89d53a6.6c49c",
+        "type": "function",
+        "z": "77c7c30f.0fd61c",
+        "name": "Restart node-red",
+        "func": "console.log('exiting as no data in 5 minutes');\nglobal.get(\"process\").exit();\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1490,
+        "y": 420,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "62d2148c.a71b5c",
+        "type": "Kafka Consumer",
+        "z": "77c7c30f.0fd61c",
+        "name": "kafka:spiddal-ctd",
+        "broker": "c7885260.5b223",
+        "topics": [
+            {
+                "topic": "spiddal-ctd",
+                "offset": 0,
+                "partition": 0
+            }
+        ],
+        "groupId": "gconode06-spiddal-ctd-process-monitor",
+        "autoCommit": "true",
+        "autoCommitIntervalMs": 5000,
+        "fetchMaxWaitMs": 100,
+        "fetchMinBytes": 1,
+        "fetchMaxBytes": 1048576,
+        "fromOffset": 0,
+        "encoding": "utf8",
+        "keyEncoding": "utf8",
+        "connectionType": "Consumer",
+        "x": 200,
+        "y": 300,
+        "wires": [
+            [
+                "b1026f4e.34638"
+            ]
+        ]
+    },
+    {
+        "id": "b1b9ccc3.2059a",
+        "type": "inject",
+        "z": "77c7c30f.0fd61c",
+        "name": "Inject on starup",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "x": 200,
+        "y": 520,
+        "wires": [
+            [
+                "b1026f4e.34638",
+                "4a80bdf3.1812c4"
+            ]
+        ]
+    },
+    {
+        "id": "4a80bdf3.1812c4",
+        "type": "http request",
+        "z": "77c7c30f.0fd61c",
+        "name": "Fetch device configuration",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": false,
+        "url": "${CSV_CONFIG}",
+        "tls": "",
+        "persist": false,
+        "proxy": "f6890e1d.e2fac",
+        "authType": "",
+        "x": 310,
+        "y": 660,
+        "wires": [
+            [
+                "b6a6cc15.a79d"
+            ]
+        ]
+    },
+    {
+        "id": "b6a6cc15.a79d",
+        "type": "csv",
+        "z": "77c7c30f.0fd61c",
+        "name": "Parse configuration",
+        "sep": ",",
+        "hdrin": true,
+        "hdrout": "",
+        "multi": "mult",
+        "ret": "\\n",
+        "temp": "",
+        "skip": "0",
+        "strings": true,
+        "x": 510,
+        "y": 580,
+        "wires": [
+            [
+                "afad29d8.d26af8"
+            ]
+        ]
+    },
+    {
+        "id": "f54ac812.e444c8",
+        "type": "file in",
+        "z": "77c7c30f.0fd61c",
+        "name": "Read settings file",
+        "filename": "/data/settings.js",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "x": 1090,
+        "y": 640,
+        "wires": [
+            [
+                "981e5839.accc48"
+            ]
+        ]
+    },
+    {
+        "id": "afad29d8.d26af8",
+        "type": "function",
+        "z": "77c7c30f.0fd61c",
+        "name": "Set current config",
+        "func": "let now = new Date().toISOString();\nlet configs = msg.payload.filter(x=>x.start_date<now && ((!x.end_date) || x.end_date>now))\nif(configs.length > 0){\n    let config = configs[0];\n    flow.set(\"config\",config);\n    msg.payload = config;\n    node.send(msg);\n}\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 670,
+        "y": 640,
+        "wires": [
+            [
+                "2b1146e4.c2039a",
+                "98531c89.6ad64"
+            ]
+        ]
+    },
+    {
+        "id": "2b1146e4.c2039a",
+        "type": "function",
+        "z": "77c7c30f.0fd61c",
+        "name": "Has server address or port changed",
+        "func": "let process = global.get(\"process\");\nif( \n    (msg.payload.moxa_server && `${msg.payload.moxa_server}` !== `${process.env.DEVICE_SERVER}`)\n || \n     (msg.payload.moxa_port && `${msg.payload.moxa_port}` !== `${process.env.DEVICE_PORT}`)\n || \n     (msg.payload.moxa_port && `${msg.payload.moxa_command_port}` !== `${process.env.DEVICE_COMMAND_PORT}`)     \n\n )\n{\n    flow.set(\"DEVICE_SERVER\",msg.payload.moxa_server);\n    flow.set(\"DEVICE_PORT\",msg.payload.moxa_port);\n    flow.set(\"DEVICE_COMMAND_PORT\",msg.payload.moxa_command_port);\n    send(msg);\n}\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 920,
+        "y": 580,
+        "wires": [
+            [
+                "f54ac812.e444c8"
+            ]
+        ]
+    },
+    {
+        "id": "981e5839.accc48",
+        "type": "function",
+        "z": "77c7c30f.0fd61c",
+        "name": "Update settings",
+        "func": "let DEVICE_SERVER = flow.get(\"DEVICE_SERVER\");\nlet DEVICE_PORT = flow.get(\"DEVICE_PORT\");\nlet DEVICE_COMMAND_PORT = flow.get(\"DEVICE_COMMAND_PORT\");\nif(DEVICE_SERVER && DEVICE_PORT && DEVICE_COMMAND_PORT){\n    let before = msg.payload;\n    let lines = msg.payload.split(\"\\n\");\n    const regex_server = /^\\s*process.env.DEVICE_SERVER\\s*=/\n    const regex_port= /^\\s*process.env.DEVICE_PORT\\s*=/\n    const regex_command_port= /^\\s*process.env.DEVICE_COMMAND_PORT\\s*=/\n    lines = lines.map(line=>{\n        if(line.match(regex_server)){\n            return `process.env.DEVICE_SERVER = \"${DEVICE_SERVER}\";`;           \n        }else if(line.match(regex_port)){\n            return `process.env.DEVICE_PORT = \"${DEVICE_PORT}\";`;   \n        }else if(line.match(regex_command_port)){\n            return `process.env.DEVICE_COMMAND_PORT = \"${DEVICE_COMMAND_PORT}\";`;   \n        }else{\n            return line;\n        }\n    });\n    msg.payload = lines.join(\"\\n\");\n    if(before !== msg.payload){\n        send(msg);    \n    }\n}\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1240,
+        "y": 580,
+        "wires": [
+            [
+                "7f062d98.93cf94"
+            ]
+        ]
+    },
+    {
+        "id": "7f062d98.93cf94",
+        "type": "file",
+        "z": "77c7c30f.0fd61c",
+        "name": "rewrite settings file",
+        "filename": "/data/settings.js",
+        "appendNewline": false,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 1370,
+        "y": 640,
+        "wires": [
+            [
+                "c89d53a6.6c49c"
+            ]
+        ]
+    },
+    {
+        "id": "98531c89.6ad64",
+        "type": "switch",
+        "z": "77c7c30f.0fd61c",
+        "name": "Configure on startup?",
+        "property": "payload.configure_on_startup",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "true",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 890,
+        "y": 740,
+        "wires": [
+            [
+                "6ce3595d.a48088"
+            ]
+        ]
+    },
+    {
+        "id": "6ce3595d.a48088",
+        "type": "http request",
+        "z": "77c7c30f.0fd61c",
+        "name": "Fetch device configuration",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": false,
+        "url": "${CSV_COMMAND_CONFIG}",
+        "tls": "",
+        "persist": false,
+        "proxy": "f6890e1d.e2fac",
+        "authType": "",
+        "x": 1150,
+        "y": 740,
+        "wires": [
+            [
+                "648d6b0.8f62e94"
+            ]
+        ]
+    },
+    {
+        "id": "648d6b0.8f62e94",
+        "type": "function",
+        "z": "77c7c30f.0fd61c",
+        "name": "Filter commands",
+        "func": "let timestamp = new Date().toISOString().replace('T',' ').substring(0,19);\nlet lines = msg.payload.split(\"\\n\")\n        .map(x=>x.trim())\n        .map(x=>x.replace('{timestamp}',timestamp))\n        .filter(x=>x.length&&!x.startsWith(\"#\"));\n\nreturn {payload: lines};",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1400,
+        "y": 720,
+        "wires": [
+            [
+                "c319188c.7a1c88",
+                "60ced16b.6bc66"
+            ]
+        ]
+    },
+    {
+        "id": "ac4beb51.c44828",
+        "type": "inject",
+        "z": "77c7c30f.0fd61c",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 960,
+        "y": 800,
+        "wires": [
+            [
+                "6ce3595d.a48088"
+            ]
+        ]
+    },
+    {
+        "id": "c31fe969.45ca08",
+        "type": "tcp request",
+        "z": "77c7c30f.0fd61c",
+        "server": "${DEVICE_SERVER}",
+        "port": "${DEVICE_COMMAND_PORT}",
+        "out": "time",
+        "splitc": "300",
+        "name": "Send command to CTD COMMAND PORT",
+        "x": 1830,
+        "y": 800,
+        "wires": [
+            [
+                "c319188c.7a1c88"
+            ]
+        ]
+    },
+    {
+        "id": "60ced16b.6bc66",
+        "type": "function",
+        "z": "77c7c30f.0fd61c",
+        "name": "emit commands",
+        "func": "const commands = msg.payload;\nconst thenode = node;\n\nlet sendBreak = ()=>{\n    thenode.send({payload: String.fromCharCode.apply(null,[3]), port: \"DEVICE_COMMAND_PORT\"});\n};\n\n\nconst sendCommand = ()=>{\n    let command = commands.shift();\n    if(command){\n        let chars = `${command}\\r`;\n        thenode.send({payload: chars, port: \"DEVICE_PORT\"});\n        setTimeout(sendCommand,1000)\n    }\n};\n\nsendBreak();\nsetTimeout(()=>{\n    sendBreak();\n    setTimeout(sendCommand, 5000)\n},400)\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1470,
+        "y": 800,
+        "wires": [
+            [
+                "c319188c.7a1c88",
+                "cc6ad2d0.6f199"
+            ]
+        ]
+    },
+    {
+        "id": "804973de.dd8ea",
+        "type": "tcp request",
+        "z": "77c7c30f.0fd61c",
+        "server": "${DEVICE_SERVER}",
+        "port": "${DEVICE_PORT}",
+        "out": "time",
+        "splitc": "300",
+        "name": "Send command to CTD PORT",
+        "x": 1810,
+        "y": 880,
+        "wires": [
+            [
+                "c319188c.7a1c88"
+            ]
+        ]
+    },
+    {
+        "id": "cc6ad2d0.6f199",
+        "type": "switch",
+        "z": "77c7c30f.0fd61c",
+        "name": "Choose Port",
+        "property": "port",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "DEVICE_COMMAND_PORT",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "DEVICE_PORT",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 1560,
+        "y": 880,
+        "wires": [
+            [
+                "c31fe969.45ca08"
+            ],
+            [
+                "804973de.dd8ea"
+            ]
+        ]
+    },
+    {
+        "id": "f65da627.d136d8",
+        "type": "debug",
+        "z": "77c7c30f.0fd61c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 540,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "c7885260.5b223",
+        "type": "Kafka Broker",
+        "z": "",
+        "name": "kafka gconode05",
+        "hosts": [
+            {
+                "host": "gconode05",
+                "port": 9092
+            }
+        ],
+        "hostsEnvVar": "",
+        "connectTimeout": "10000",
+        "requestTimeout": "30000",
+        "autoConnect": "true",
+        "idleConnection": "5",
+        "reconnectOnIdle": "true",
+        "maxAsyncRequests": "10",
+        "checkInterval": "10",
+        "selfSign": true,
+        "usetls": false
+    },
+    {
+        "id": "f6890e1d.e2fac",
+        "type": "http proxy",
+        "z": "",
+        "name": "spiddal http proxy",
+        "url": "http://172.16.255.226:3128",
+        "noproxy": []
+    }
+]

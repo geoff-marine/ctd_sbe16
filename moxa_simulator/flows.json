@@ -1,0 +1,43 @@
+[
+    {
+        "id": "c58d9584.c6e7a8",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "dc942193.0eda1",
+        "type": "tcp out",
+        "z": "c58d9584.c6e7a8",
+        "host": "10.11.1.30",
+        "port": "",
+        "beserver": "client",
+        "base64": false,
+        "end": false,
+        "name": "",
+        "x": 427.5,
+        "y": 215,
+        "wires": []
+    },
+    {
+        "id": "731dbdb0.c4a464",
+        "type": "inject",
+        "z": "c58d9584.c6e7a8",
+        "name": "",
+        "topic": "",
+        "payload": "14.2224,  4.20995, 3.0355,  34.9482, 1504.150, 23 Jun 2021, 13:06:23",
+        "payloadType": "str",
+        "repeat": "2",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 129.5,
+        "y": 213,
+        "wires": [
+            [
+                "dc942193.0eda1"
+            ]
+        ]
+    }
+]

@@ -1,0 +1,1097 @@
+[
+    {
+        "id": "fb4375f3.2fb918",
+        "type": "tab",
+        "label": "CTD to Kafka",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "3722000.5fe76",
+        "type": "tab",
+        "label": "CTD - Parse",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "629f0c36.f7f324",
+        "type": "tab",
+        "label": "CTD-to-cassandra",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "3a2a1bea.131384",
+        "type": "tab",
+        "label": "CTD to mqtt",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "e6164d1a.fdb35",
+        "type": "tab",
+        "label": "CTD to file",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "b26b1434.ad2a08",
+        "type": "CassandraDatabase",
+        "z": "",
+        "hosts": "172.17.1.113,172.17.1.114,172.17.1.115,172.17.1.116,172.17.1.117",
+        "port": "9042",
+        "keyspace": "das"
+    },
+    {
+        "id": "8dbffc56.01a58",
+        "type": "mqtt-broker",
+        "z": "",
+        "name": "OLD mosca mqtt port 1683",
+        "broker": "172.19.0.1",
+        "port": "1683",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": false,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "7b85fd4d.a1e704",
+        "type": "Kafka Broker",
+        "z": "",
+        "name": "dmkaf01-03",
+        "hosts": [
+            {
+                "host": "dmkaf01",
+                "port": 9092
+            },
+            {
+                "host": "dmkaf02",
+                "port": 9092
+            },
+            {
+                "host": "dmkaf03",
+                "port": 9092
+            }
+        ],
+        "hostsEnvVar": "",
+        "connectTimeout": "1000",
+        "requestTimeout": "3000",
+        "autoConnect": "true",
+        "idleConnection": "5",
+        "reconnectOnIdle": "true",
+        "maxAsyncRequests": "10",
+        "checkInterval": "10",
+        "selfSign": true,
+        "usetls": false
+    },
+    {
+        "id": "2eda56d3.f62eba",
+        "type": "Kafka Broker",
+        "z": "",
+        "name": "dmkaf01-03",
+        "hosts": [
+            {
+                "host": "172.17.1.15",
+                "port": 9092
+            },
+            {
+                "host": "172.17.1.21",
+                "port": 9092
+            },
+            {
+                "host": "172.17.1.131",
+                "port": 9092
+            }
+        ],
+        "hostsEnvVar": "",
+        "connectTimeout": "10000",
+        "requestTimeout": "30000",
+        "autoConnect": "true",
+        "idleConnection": "5",
+        "reconnectOnIdle": "true",
+        "maxAsyncRequests": "10",
+        "checkInterval": "10",
+        "selfSign": true,
+        "usetls": false
+    },
+    {
+        "id": "7cd5660f.93a7b8",
+        "type": "mqtt-broker",
+        "z": "",
+        "name": "NEW Mosquitto temp 1083",
+        "broker": "172.19.0.1",
+        "port": "1083",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": false,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "dd148066.5b561",
+        "type": "Kafka Broker",
+        "z": "",
+        "name": "gconode05 (spiddal)",
+        "hosts": [
+            {
+                "host": "gconode05",
+                "port": 9092
+            }
+        ],
+        "hostsEnvVar": "",
+        "connectTimeout": "10000",
+        "requestTimeout": "30000",
+        "autoConnect": "true",
+        "idleConnection": "5",
+        "reconnectOnIdle": "true",
+        "maxAsyncRequests": "10",
+        "checkInterval": "10",
+        "selfSign": true,
+        "usetls": false
+    },
+    {
+        "id": "6a0d0b5f.b9af34",
+        "type": "Kafka Broker",
+        "z": "",
+        "name": "dmkaf01-03",
+        "hosts": [
+            {
+                "host": "dmkaf01",
+                "port": 9092
+            },
+            {
+                "host": "dmkaf02",
+                "port": 9092
+            },
+            {
+                "host": "dmkaf03",
+                "port": 9092
+            }
+        ],
+        "hostsEnvVar": "",
+        "connectTimeout": "10000",
+        "requestTimeout": "30000",
+        "autoConnect": "true",
+        "idleConnection": "5",
+        "reconnectOnIdle": "true",
+        "maxAsyncRequests": "10",
+        "checkInterval": "10",
+        "selfSign": true,
+        "usetls": false
+    },
+    {
+        "id": "3f018bcf.a82724",
+        "type": "postgresDB",
+        "z": "",
+        "name": "obs@172.17.1.86:5432/observatory",
+        "host": "172.17.1.86",
+        "hostFieldType": "str",
+        "port": "5432",
+        "portFieldType": "num",
+        "database": "observatory",
+        "databaseFieldType": "str",
+        "ssl": "false",
+        "sslFieldType": "bool",
+        "max": "3",
+        "maxFieldType": "num",
+        "min": "1",
+        "minFieldType": "num",
+        "idle": "1000",
+        "idleFieldType": "num",
+        "user": "obs",
+        "userFieldType": "str",
+        "password": "R4inCheck",
+        "passwordFieldType": "str"
+    },
+    {
+        "id": "266cbfe8.15f78",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-light",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#0094CE",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": true,
+                "reset": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#097479",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#0094CE",
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#fafafa",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#1bbfff",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#0094ce",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "base-font": {
+                    "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+                }
+            },
+            "angularTheme": {
+                "primary": "indigo",
+                "accents": "blue",
+                "warn": "red",
+                "background": "grey"
+            }
+        },
+        "site": {
+            "name": "Node-RED Dashboard",
+            "hideToolbar": "false",
+            "allowSwipe": "false",
+            "lockMenu": "false",
+            "allowTempTheme": "true",
+            "dateFormat": "DD/MM/YYYY",
+            "sizes": {
+                "sx": 48,
+                "sy": 48,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "f003e701.bc1c98",
+        "type": "delay",
+        "z": "3722000.5fe76",
+        "name": "",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "minute",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "x": 296,
+        "y": 80,
+        "wires": [
+            [
+                "f72dfb6a.9324a8"
+            ]
+        ]
+    },
+    {
+        "id": "f72dfb6a.9324a8",
+        "type": "debug",
+        "z": "3722000.5fe76",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "complete": "false",
+        "x": 466,
+        "y": 138,
+        "wires": []
+    },
+    {
+        "id": "3a926056.28e34",
+        "type": "csv",
+        "z": "3722000.5fe76",
+        "name": "split fields",
+        "sep": "|",
+        "hdrin": "",
+        "hdrout": "",
+        "multi": "one",
+        "ret": "\\n",
+        "temp": "mi_timestamp,instrument_id,ctd",
+        "skip": 0,
+        "strings": true,
+        "x": 245,
+        "y": 279,
+        "wires": [
+            [
+                "be42d960.2f5808"
+            ]
+        ]
+    },
+    {
+        "id": "be42d960.2f5808",
+        "type": "switch",
+        "z": "3722000.5fe76",
+        "name": "Skip data before 2020-04-23",
+        "property": "payload.mi_timestamp",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "gt",
+                "v": "2020-04-23",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 437,
+        "y": 211,
+        "wires": [
+            [
+                "aa2eedb5.6238c"
+            ]
+        ]
+    },
+    {
+        "id": "aa2eedb5.6238c",
+        "type": "switch",
+        "z": "3722000.5fe76",
+        "name": "take ctd data",
+        "property": "payload.ctd",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "regex",
+                "v": "^\\s*[0-9].*",
+                "vt": "str",
+                "case": true
+            }
+        ],
+        "checkall": "true",
+        "outputs": 1,
+        "x": 544,
+        "y": 318,
+        "wires": [
+            [
+                "2fea6077.dcd2a"
+            ]
+        ]
+    },
+    {
+        "id": "2fea6077.dcd2a",
+        "type": "function",
+        "z": "3722000.5fe76",
+        "name": "parse ctd data string",
+        "func": "var parts = msg.payload.ctd.trim().split(/\\s+/);\n    if(parts.length < 6){\n      //error.write(records[i],\"not enough fields\");\n      return null;\n    }\n\t\n//|  24.94  14.498  40.174  32.926 1503.0553 14:58:00.92M\t\n\t\nvar timestamp =  msg.payload.mi_timestamp;\nvar instrument_id = msg.payload.instrument_id;\nvar raw = msg.payload.ctd.trim();\nvar press = parseFloat(parts[0]);\nvar temp =  parseFloat(parts[1]);\nvar cond = parseFloat(parts[2]);\nvar sal = parseFloat(parts[3]);\nvar soundv = parseFloat(parts[4]);\nvar dissolved_oxygen_sat = parseFloat(parts[5]);\nvar dissolved_oxygen_ppm = parseFloat(parts[6]);\nvar ttime = parts[7];\nvar newMsg = {\n       payload: {\n\t    time: timestamp,\n\t\tinstrument_id: instrument_id,\n\t\traw: raw,\n\t\tpress: press,\n\t\ttemp: temp,\n\t\tcond: cond,\n\t\tsal: sal,\n\t\tsoundv: soundv,\n\t\tttime: ttime,\n\t\tdissolved_oxygen_ppm: dissolved_oxygen_ppm,\n\t\tdissolved_oxygen_sat: dissolved_oxygen_sat\n\t   }\n    };\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 756,
+        "y": 209,
+        "wires": [
+            [
+                "cc9a7251.33ee9"
+            ]
+        ]
+    },
+    {
+        "id": "cc9a7251.33ee9",
+        "type": "function",
+        "z": "3722000.5fe76",
+        "name": "Add Static Data",
+        "func": "msg.payload.lat = 53.22733;\nmsg.payload.lon = -9.26629;\nmsg.payload.depth = 20.00;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 814,
+        "y": 323,
+        "wires": [
+            [
+                "d5eb0758.798d68"
+            ]
+        ]
+    },
+    {
+        "id": "d5eb0758.798d68",
+        "type": "function",
+        "z": "3722000.5fe76",
+        "name": "Stringify json",
+        "func": "var payload = JSON.stringify(msg.payload);\nmsg.payload = payload\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1025,
+        "y": 205,
+        "wires": [
+            [
+                "d34f44ca.d8d708"
+            ]
+        ]
+    },
+    {
+        "id": "53f85455.79683c",
+        "type": "function",
+        "z": "629f0c36.f7f324",
+        "name": "Convert to CQL",
+        "func": "var fields = [\"instrument_id\",\"time\",\"lat\",\"lon\",\"depth\",\n\"press\", \"temp\", \"cond\", \"sal\", \"soundv\", \"ttime\", \"dissolved_oxygen_ppm\", \"dissolved_oxygen_sat\"\n];\nvar field_names = fields.join(\",\");\nvar values = [];\nfor(var i=0;i<fields.length;i++){\n    values.push(msg.payload[fields[i]]);\n    fields[i] = \"?\";\n}\nvar placeholders = fields.join(\",\");\nvar topic = \"INSERT INTO ctd (\"+field_names+\") values (\"+placeholders+\")\";\nvar newmsg = {\n    topic: topic,\n    payload: values\n}\nreturn newmsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 274,
+        "y": 208,
+        "wires": [
+            [
+                "c3c42d16.b74f6"
+            ]
+        ]
+    },
+    {
+        "id": "c3c42d16.b74f6",
+        "type": "function",
+        "z": "629f0c36.f7f324",
+        "name": "prepare for batcher",
+        "func": "// the output of the previous node could go to cassandra,\n// having the topic of query, and payload of params.\n//\n// however we now want to batch the results.\n// batcher batches on topics, and collects payloads\n\nreturn {topic:\"cassandra\", payload:{query: msg.topic, params: msg.payload}};",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 463,
+        "y": 151,
+        "wires": [
+            [
+                "bc525659.207c08"
+            ]
+        ]
+    },
+    {
+        "id": "bc525659.207c08",
+        "type": "batcher",
+        "z": "629f0c36.f7f324",
+        "name": "Batch Cassandra Queries every 10 seconds",
+        "maxTopics": 1,
+        "maxMessagesPerTopic": "5000",
+        "maxDelay": "10000",
+        "x": 674,
+        "y": 212,
+        "wires": [
+            [
+                "60a48a3f.04f894"
+            ]
+        ]
+    },
+    {
+        "id": "60a48a3f.04f894",
+        "type": "function",
+        "z": "629f0c36.f7f324",
+        "name": "Prepare batch for cassandra",
+        "func": "// cassandra node expects the batch in the topic\nreturn {topic: msg.payload, payload: \"ignored\"};",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 740,
+        "y": 282,
+        "wires": [
+            [
+                "14e1cb91.1a1154",
+                "b0f25789.bd65a8"
+            ]
+        ]
+    },
+    {
+        "id": "14e1cb91.1a1154",
+        "type": "cassandra",
+        "z": "629f0c36.f7f324",
+        "mydb": "b26b1434.ad2a08",
+        "name": "Write to Cassandra",
+        "x": 855.5,
+        "y": 404,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b0f25789.bd65a8",
+        "type": "debug",
+        "z": "629f0c36.f7f324",
+        "name": "",
+        "active": false,
+        "console": "false",
+        "complete": "topic",
+        "x": 1055,
+        "y": 263,
+        "wires": []
+    },
+    {
+        "id": "4971e592.666d6c",
+        "type": "json",
+        "z": "629f0c36.f7f324",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 117.5,
+        "y": 274,
+        "wires": [
+            [
+                "53f85455.79683c",
+                "9989808e.dbd2d"
+            ]
+        ]
+    },
+    {
+        "id": "d34f44ca.d8d708",
+        "type": "Kafka Producer",
+        "z": "3722000.5fe76",
+        "name": "kafka:spiddal-ctd-json",
+        "broker": "2eda56d3.f62eba",
+        "topic": "spiddal-ctd-json",
+        "requireAcks": 1,
+        "ackTimeoutMs": 100,
+        "partitionerType": 0,
+        "key": "",
+        "partition": 0,
+        "attributes": 0,
+        "connectionType": "Producer",
+        "x": 1217,
+        "y": 317,
+        "wires": []
+    },
+    {
+        "id": "3332f429.37723c",
+        "type": "Kafka Consumer",
+        "z": "629f0c36.f7f324",
+        "name": "kafka:spiddal-ctd-json",
+        "broker": "7b85fd4d.a1e704",
+        "topics": [
+            {
+                "topic": "spiddal-ctd-json",
+                "offset": 0,
+                "partition": 0
+            }
+        ],
+        "groupId": "noderedctd01",
+        "autoCommit": "true",
+        "autoCommitIntervalMs": 5000,
+        "fetchMaxWaitMs": 100,
+        "fetchMinBytes": 1,
+        "fetchMaxBytes": 1048576,
+        "fromOffset": 0,
+        "encoding": "utf8",
+        "keyEncoding": "utf8",
+        "connectionType": "Consumer",
+        "x": 165.5,
+        "y": 69,
+        "wires": [
+            [
+                "4971e592.666d6c"
+            ]
+        ]
+    },
+    {
+        "id": "7354834.cf9b97c",
+        "type": "Kafka Producer",
+        "z": "fb4375f3.2fb918",
+        "name": "kafka:spiddal-ctd",
+        "broker": "7b85fd4d.a1e704",
+        "topic": "spiddal-ctd",
+        "requireAcks": 1,
+        "ackTimeoutMs": 100,
+        "partitionerType": 0,
+        "key": "",
+        "partition": 0,
+        "attributes": 0,
+        "connectionType": "Producer",
+        "x": 696.5,
+        "y": 195,
+        "wires": []
+    },
+    {
+        "id": "bb244523.2f8a68",
+        "type": "Kafka Consumer",
+        "z": "3722000.5fe76",
+        "name": "kafka:spiddal-ctd",
+        "broker": "7b85fd4d.a1e704",
+        "topics": [
+            {
+                "topic": "spiddal-ctd",
+                "offset": 0,
+                "partition": 0
+            }
+        ],
+        "groupId": "noderedctd01",
+        "autoCommit": "true",
+        "autoCommitIntervalMs": 5000,
+        "fetchMaxWaitMs": 100,
+        "fetchMinBytes": 1,
+        "fetchMaxBytes": 1048576,
+        "fromOffset": 0,
+        "encoding": "utf8",
+        "keyEncoding": "utf8",
+        "connectionType": "Consumer",
+        "x": 135.5,
+        "y": 151,
+        "wires": [
+            [
+                "3a926056.28e34",
+                "f003e701.bc1c98"
+            ]
+        ]
+    },
+    {
+        "id": "a7aa4b88.a6ffe8",
+        "type": "Kafka Consumer Group",
+        "z": "3a2a1bea.131384",
+        "name": "kafka:spiddal-ctd",
+        "broker": "7b85fd4d.a1e704",
+        "groupId": "noderedctd-spiddal-ctd",
+        "sessionTimeout": 15000,
+        "protocol": [
+            "roundrobin"
+        ],
+        "encoding": "utf8",
+        "fromOffset": "latest",
+        "commitOffsetsOnFirstJoin": "true",
+        "outOfRangeOffset": "latest",
+        "topics": [
+            "spiddal-ctd"
+        ],
+        "x": 198.5,
+        "y": 127,
+        "wires": [
+            [
+                "61c906b3.cc0948"
+            ]
+        ]
+    },
+    {
+        "id": "b9b28179.6db8b",
+        "type": "Kafka Consumer Group",
+        "z": "3a2a1bea.131384",
+        "name": "kafka:spiddal-ctd-json",
+        "broker": "7b85fd4d.a1e704",
+        "groupId": "noderedctd-spiddal-ctd",
+        "sessionTimeout": 15000,
+        "protocol": [
+            "roundrobin"
+        ],
+        "encoding": "utf8",
+        "fromOffset": "latest",
+        "commitOffsetsOnFirstJoin": "true",
+        "outOfRangeOffset": "latest",
+        "topics": [
+            "spiddal-ctd-json"
+        ],
+        "x": 207,
+        "y": 224,
+        "wires": [
+            [
+                "84d9fc65.ba9a4"
+            ]
+        ]
+    },
+    {
+        "id": "a30da05b.f391c",
+        "type": "mqtt out",
+        "z": "3a2a1bea.131384",
+        "name": "mqtt:spiddal-ctd",
+        "topic": "spiddal-ctd",
+        "qos": "1",
+        "retain": "false",
+        "broker": "7cd5660f.93a7b8",
+        "x": 587.5,
+        "y": 119,
+        "wires": []
+    },
+    {
+        "id": "84d9fc65.ba9a4",
+        "type": "mqtt out",
+        "z": "3a2a1bea.131384",
+        "name": "mqtt:spiddal-ctd-json",
+        "topic": "spiddal-ctd-json",
+        "qos": "1",
+        "retain": "false",
+        "broker": "7cd5660f.93a7b8",
+        "x": 609,
+        "y": 212,
+        "wires": []
+    },
+    {
+        "id": "60d705f5.3cd91c",
+        "type": "comment",
+        "z": "3a2a1bea.131384",
+        "name": "TODO",
+        "info": "Change the published mqtt port when mosquitto goes to production",
+        "x": 223.5,
+        "y": 55,
+        "wires": []
+    },
+    {
+        "id": "40ec64f1.086a6c",
+        "type": "Kafka Consumer",
+        "z": "fb4375f3.2fb918",
+        "name": "(spiddal) kafka:spiddal-ctd",
+        "broker": "dd148066.5b561",
+        "topics": [
+            {
+                "topic": "spiddal-ctd",
+                "offset": 0,
+                "partition": 0
+            }
+        ],
+        "groupId": "noderedctd01",
+        "autoCommit": "true",
+        "autoCommitIntervalMs": 5000,
+        "fetchMaxWaitMs": 100,
+        "fetchMinBytes": 1,
+        "fetchMaxBytes": 1048576,
+        "fromOffset": 0,
+        "encoding": "utf8",
+        "keyEncoding": "utf8",
+        "connectionType": "Consumer",
+        "x": 248.5,
+        "y": 211,
+        "wires": [
+            [
+                "2a33b085.08e4e",
+                "7354834.cf9b97c"
+            ]
+        ]
+    },
+    {
+        "id": "2a33b085.08e4e",
+        "type": "debug",
+        "z": "fb4375f3.2fb918",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 589.5,
+        "y": 307,
+        "wires": []
+    },
+    {
+        "id": "61c906b3.cc0948",
+        "type": "function",
+        "z": "3a2a1bea.131384",
+        "name": "Add a white space for smartbay widget",
+        "func": "//TODO get smartbay fixed and remove this\nvar parts = msg.payload.split('|');\nparts[2] = \" \"+parts[2];\nmsg.payload = parts.join('|');\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 518,
+        "y": 62,
+        "wires": [
+            [
+                "a30da05b.f391c"
+            ]
+        ]
+    },
+    {
+        "id": "f167c73f.1c9f98",
+        "type": "Kafka Consumer",
+        "z": "fb4375f3.2fb918",
+        "name": "kafka:spiddal-ctd",
+        "broker": "7b85fd4d.a1e704",
+        "topics": [
+            {
+                "topic": "spiddal-ctd",
+                "offset": 0,
+                "partition": 0
+            }
+        ],
+        "groupId": "noderedctd01-monitor",
+        "autoCommit": "true",
+        "autoCommitIntervalMs": 5000,
+        "fetchMaxWaitMs": 100,
+        "fetchMinBytes": 1,
+        "fetchMaxBytes": 1048576,
+        "fromOffset": 0,
+        "encoding": "utf8",
+        "keyEncoding": "utf8",
+        "connectionType": "Consumer",
+        "x": 698,
+        "y": 441,
+        "wires": [
+            [
+                "387e5595.f5d19a"
+            ]
+        ]
+    },
+    {
+        "id": "387e5595.f5d19a",
+        "type": "trigger",
+        "z": "fb4375f3.2fb918",
+        "op1": "",
+        "op2": "0",
+        "op1type": "nul",
+        "op2type": "str",
+        "duration": "5",
+        "extend": true,
+        "units": "min",
+        "reset": "",
+        "bytopic": "all",
+        "name": "trigger if no messages for 5 minutes",
+        "x": 942,
+        "y": 387,
+        "wires": [
+            [
+                "e589864e.2a38a8"
+            ]
+        ]
+    },
+    {
+        "id": "e589864e.2a38a8",
+        "type": "function",
+        "z": "fb4375f3.2fb918",
+        "name": "restart node-red",
+        "func": "console.log(\"restarting as no messages past 5 minutes\")\nglobal.get(\"process\").exit()",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1196,
+        "y": 435,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "49193a8c.333a94",
+        "type": "inject",
+        "z": "fb4375f3.2fb918",
+        "name": "Inject on Startup",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "x": 685,
+        "y": 374,
+        "wires": [
+            [
+                "387e5595.f5d19a"
+            ]
+        ]
+    },
+    {
+        "id": "d6df1592.bc1c88",
+        "type": "function",
+        "z": "e6164d1a.fdb35",
+        "name": "Assign topic as year-month-day|device_id",
+        "func": "let [timestamp,device_id] = msg.payload.split(\"|\");\nlet date = timestamp.substring(0,10);\nmsg.topic = date+\"|\"+device_id;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 517,
+        "y": 407,
+        "wires": [
+            [
+                "71c8a59a.c4016c"
+            ]
+        ]
+    },
+    {
+        "id": "71c8a59a.c4016c",
+        "type": "batcher",
+        "z": "e6164d1a.fdb35",
+        "name": "Batch for 2 minutes",
+        "maxTopics": 1,
+        "maxMessagesPerTopic": "100000",
+        "maxDelay": "120000",
+        "x": 669.5,
+        "y": 213,
+        "wires": [
+            [
+                "baa6083b.a93138"
+            ]
+        ]
+    },
+    {
+        "id": "baa6083b.a93138",
+        "type": "function",
+        "z": "e6164d1a.fdb35",
+        "name": "Assign filename",
+        "func": "let [date,device_id] = msg.topic.split(\"|\");\nlet [year,month,day] = date.split(\"-\");\nlet filename = `/data/synology/serialdata/ctds/${device_id}/${year}/${device_id}_${year}${month}${day}.txt`\nmsg.filename = filename;\nmsg.payload = msg.payload.join(\"\\n\");\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 837.5,
+        "y": 369,
+        "wires": [
+            [
+                "104f49b7.32b3c6"
+            ]
+        ]
+    },
+    {
+        "id": "104f49b7.32b3c6",
+        "type": "file",
+        "z": "e6164d1a.fdb35",
+        "name": "Write ctd txt file",
+        "filename": "",
+        "appendNewline": true,
+        "createDir": true,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 937.5,
+        "y": 245,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ed31688f.c3c778",
+        "type": "switch",
+        "z": "e6164d1a.fdb35",
+        "name": "Skip data before 2020-09-10",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "gt",
+                "v": "2020-09-10",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 361,
+        "y": 303,
+        "wires": [
+            [
+                "ddfa69af.e44dd8"
+            ]
+        ]
+    },
+    {
+        "id": "e72a2034.c1d4f",
+        "type": "Kafka Consumer Group",
+        "z": "e6164d1a.fdb35",
+        "name": "kafka spiddal-ctd",
+        "broker": "6a0d0b5f.b9af34",
+        "groupId": "noderedctd2file02",
+        "sessionTimeout": 15000,
+        "protocol": [
+            "roundrobin"
+        ],
+        "encoding": "utf8",
+        "fromOffset": "earliest",
+        "commitOffsetsOnFirstJoin": "true",
+        "outOfRangeOffset": "latest",
+        "topics": [
+            "spiddal-ctd"
+        ],
+        "x": 232,
+        "y": 189,
+        "wires": [
+            [
+                "ed31688f.c3c778"
+            ]
+        ]
+    },
+    {
+        "id": "ddfa69af.e44dd8",
+        "type": "function",
+        "z": "e6164d1a.fdb35",
+        "name": "Remove non-printable characters",
+        "func": "msg.payload = msg.payload.replace(/[^\\x20-\\x7E]/g, \"\");\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 441,
+        "y": 354,
+        "wires": [
+            [
+                "d6df1592.bc1c88"
+            ]
+        ]
+    },
+    {
+        "id": "d580c3dd.14816",
+        "type": "debug",
+        "z": "629f0c36.f7f324",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 676,
+        "y": 482,
+        "wires": []
+    },
+    {
+        "id": "2ab91264.b5bafe",
+        "type": "postgrestor",
+        "z": "629f0c36.f7f324",
+        "name": "Insert to TimescaleDB",
+        "query": "{{ msg.query }};",
+        "postgresDB": "3f018bcf.a82724",
+        "output": true,
+        "outputs": 1,
+        "x": 369,
+        "y": 559,
+        "wires": [
+            [
+                "d580c3dd.14816"
+            ]
+        ]
+    },
+    {
+        "id": "9989808e.dbd2d",
+        "type": "function",
+        "z": "629f0c36.f7f324",
+        "name": "Convert to SQL",
+        "func": "var fields = [\"instrument_id\",\"time\",\"lat\",\"lon\",\"depth\",\n\"press\", \"temp\", \"cond\", \"sal\", \"soundv\", \"ttime\", \"dissolved_oxygen_ppm\", \"dissolved_oxygen_sat\"\n];\nvar field_names = fields.join(\",\");\nvar values = [];\nfor(var i=0;i<fields.length;i++){\n    values.push(msg.payload[fields[i]]);\n    fields[i] = \"$\"+(i+1);\n}\nvar placeholders = fields.join(\",\");\nvar query = \"INSERT INTO das.ctd (\"+field_names+\") values (\"+placeholders+\")\";\nmsg.query = query,\nmsg.params = values\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 300,
+        "y": 444,
+        "wires": [
+            [
+                "2ab91264.b5bafe"
+            ]
+        ]
+    }
+]
