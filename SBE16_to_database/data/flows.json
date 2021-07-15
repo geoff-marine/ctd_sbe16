@@ -2,28 +2,28 @@
     {
         "id": "3722000.5fe76",
         "type": "tab",
-        "label": "CTD - Parse",
+        "label": "Parse to json",
         "disabled": false,
         "info": ""
     },
     {
         "id": "629f0c36.f7f324",
         "type": "tab",
-        "label": "CTD-to-databases",
+        "label": "json to databases",
         "disabled": false,
         "info": ""
     },
     {
         "id": "3a2a1bea.131384",
         "type": "tab",
-        "label": "CTD to mqtt",
+        "label": "to mqtt",
         "disabled": false,
         "info": ""
     },
     {
         "id": "e6164d1a.fdb35",
         "type": "tab",
-        "label": "CTD to file",
+        "label": "to file",
         "disabled": false,
         "info": ""
     },
@@ -49,85 +49,6 @@
         "willPayload": ""
     },
     {
-        "id": "7b85fd4d.a1e704",
-        "type": "Kafka Broker",
-        "name": "dmkaf01-03",
-        "hosts": [
-            {
-                "host": "dmkaf01",
-                "port": 9092
-            },
-            {
-                "host": "dmkaf02",
-                "port": 9092
-            },
-            {
-                "host": "dmkaf03",
-                "port": 9092
-            }
-        ],
-        "hostsEnvVar": "",
-        "connectTimeout": "1000",
-        "requestTimeout": "3000",
-        "autoConnect": "true",
-        "idleConnection": "5",
-        "reconnectOnIdle": "true",
-        "maxAsyncRequests": "10",
-        "checkInterval": "10",
-        "selfSign": true,
-        "usetls": false
-    },
-    {
-        "id": "2eda56d3.f62eba",
-        "type": "Kafka Broker",
-        "name": "dmkaf01-03",
-        "hosts": [
-            {
-                "host": "172.17.1.15",
-                "port": 9092
-            },
-            {
-                "host": "172.17.1.21",
-                "port": 9092
-            },
-            {
-                "host": "172.17.1.131",
-                "port": 9092
-            }
-        ],
-        "hostsEnvVar": "",
-        "connectTimeout": "10000",
-        "requestTimeout": "30000",
-        "autoConnect": "true",
-        "idleConnection": "5",
-        "reconnectOnIdle": "true",
-        "maxAsyncRequests": "10",
-        "checkInterval": "10",
-        "selfSign": true,
-        "usetls": false
-    },
-    {
-        "id": "2eda56d3.f62eba",
-        "type": "Kafka Broker",
-        "name": "Broker from settings.js",
-        "hosts": [
-            {
-                "host": "${KAFKA_BROKER_HOST}",
-                "port": "${KAFKA_BROKER_PORT}"
-            }
-        ],
-        "hostsEnvVar": "",
-        "connectTimeout": "10000",
-        "requestTimeout": "30000",
-        "autoConnect": "true",
-        "idleConnection": "5",
-        "reconnectOnIdle": "true",
-        "maxAsyncRequests": "10",
-        "checkInterval": "10",
-        "selfSign": true,
-        "usetls": false
-    },
-    {
         "id": "7cd5660f.93a7b8",
         "type": "mqtt-broker",
         "name": "NEW Mosquitto temp 1083",
@@ -147,56 +68,6 @@
         "willTopic": "",
         "willQos": "0",
         "willPayload": ""
-    },
-    {
-        "id": "dd148066.5b561",
-        "type": "Kafka Broker",
-        "name": "gconode05 (spiddal)",
-        "hosts": [
-            {
-                "host": "gconode05",
-                "port": 9092
-            }
-        ],
-        "hostsEnvVar": "",
-        "connectTimeout": "10000",
-        "requestTimeout": "30000",
-        "autoConnect": "true",
-        "idleConnection": "5",
-        "reconnectOnIdle": "true",
-        "maxAsyncRequests": "10",
-        "checkInterval": "10",
-        "selfSign": true,
-        "usetls": false
-    },
-    {
-        "id": "6a0d0b5f.b9af34",
-        "type": "Kafka Broker",
-        "name": "dmkaf01-03",
-        "hosts": [
-            {
-                "host": "dmkaf01",
-                "port": 9092
-            },
-            {
-                "host": "dmkaf02",
-                "port": 9092
-            },
-            {
-                "host": "dmkaf03",
-                "port": 9092
-            }
-        ],
-        "hostsEnvVar": "",
-        "connectTimeout": "10000",
-        "requestTimeout": "30000",
-        "autoConnect": "true",
-        "idleConnection": "5",
-        "reconnectOnIdle": "true",
-        "maxAsyncRequests": "10",
-        "checkInterval": "10",
-        "selfSign": true,
-        "usetls": false
     },
     {
         "id": "3f018bcf.a82724",
@@ -318,40 +189,26 @@
         }
     },
     {
-        "id": "f003e701.bc1c98",
-        "type": "delay",
-        "z": "3722000.5fe76",
-        "name": "",
-        "pauseType": "rate",
-        "timeout": "5",
-        "timeoutUnits": "seconds",
-        "rate": "1",
-        "nbRateUnits": "1",
-        "rateUnits": "minute",
-        "randomFirst": "1",
-        "randomLast": "5",
-        "randomUnits": "seconds",
-        "drop": true,
-        "x": 296,
-        "y": 80,
-        "wires": [
-            [
-                "f72dfb6a.9324a8"
-            ]
-        ]
-    },
-    {
-        "id": "f72dfb6a.9324a8",
-        "type": "debug",
-        "z": "3722000.5fe76",
-        "name": "",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "complete": "false",
-        "x": 466,
-        "y": 138,
-        "wires": []
+        "id": "a676d99.b4f1e28",
+        "type": "Kafka Broker",
+        "name": "broker from settings.js",
+        "hosts": [
+            {
+                "host": "${KAFKA_BROKER_HOST}",
+                "port": "${KAFKA_BROKER_HOST}"
+            }
+        ],
+        "hostsEnvVar": "",
+        "connectTimeout": "10000",
+        "requestTimeout": "30000",
+        "autoConnect": "true",
+        "idleConnection": "5",
+        "reconnectOnIdle": "true",
+        "maxAsyncRequests": "10",
+        "checkInterval": "10",
+        "selfSign": true,
+        "usetls": false,
+        "useCredentials": false
     },
     {
         "id": "3a926056.28e34",
@@ -467,9 +324,10 @@
         "id": "d34f44ca.d8d708",
         "type": "Kafka Producer",
         "z": "3722000.5fe76",
-        "name": "kafka:ctd-json",
-        "broker": "2eda56d3.f62eba",
+        "name": "kafka:to json",
+        "broker": "a676d99.b4f1e28",
         "topic": "${KAFKA_PRODUCER_TOPIC}",
+        "topicSlash2dot": false,
         "requireAcks": 1,
         "ackTimeoutMs": 100,
         "partitionerType": 0,
@@ -477,7 +335,7 @@
         "partition": 0,
         "attributes": 0,
         "connectionType": "Producer",
-        "x": 1217,
+        "x": 1207,
         "y": 317,
         "wires": []
     },
@@ -516,8 +374,8 @@
         "id": "bb244523.2f8a68",
         "type": "Kafka Consumer",
         "z": "3722000.5fe76",
-        "name": "devkafka",
-        "broker": "2eda56d3.f62eba",
+        "name": "read kafka ",
+        "broker": "a676d99.b4f1e28",
         "regex": false,
         "topics": [
             {
@@ -547,7 +405,7 @@
         "wires": [
             [
                 "3a926056.28e34",
-                "f003e701.bc1c98"
+                "eaa5c917.bbae48"
             ]
         ]
     },
@@ -598,9 +456,7 @@
         "x": 207,
         "y": 224,
         "wires": [
-            [
-                "84d9fc65.ba9a4"
-            ]
+            []
         ]
     },
     {
@@ -650,9 +506,7 @@
         "x": 518,
         "y": 62,
         "wires": [
-            [
-                "a30da05b.f391c"
-            ]
+            []
         ]
     },
     {
@@ -833,5 +687,21 @@
                 "2ab91264.b5bafe"
             ]
         ]
+    },
+    {
+        "id": "eaa5c917.bbae48",
+        "type": "debug",
+        "z": "3722000.5fe76",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 360,
+        "y": 140,
+        "wires": []
     }
 ]
