@@ -254,22 +254,6 @@
         "willPayload": ""
     },
     {
-        "id": "a51e405c.10f64",
-        "type": "MSSQL-CN",
-        "tdsVersion": "7_4",
-        "name": "SQL Server",
-        "server": "${SQLSERVER_SERVER}",
-        "port": "${SQLSERVER_PORT}",
-        "encyption": false,
-        "database": "${SQLSERVER_DATABASE}",
-        "useUTC": false,
-        "connectTimeout": "15000",
-        "requestTimeout": "15000",
-        "cancelTimeout": "5000",
-        "pool": "5",
-        "parseJSON": false
-    },
-    {
         "id": "3a926056.28e34",
         "type": "csv",
         "z": "3722000.5fe76",
@@ -330,8 +314,7 @@
         "y": 209,
         "wires": [
             [
-                "d5eb0758.798d68",
-                "67d023ff.2f7ecc"
+                "d5eb0758.798d68"
             ]
         ]
     },
@@ -483,9 +466,7 @@
         "x": 198.5,
         "y": 127,
         "wires": [
-            [
-                "61c906b3.cc0948"
-            ]
+            []
         ]
     },
     {
@@ -700,8 +681,8 @@
         "postgresDB": "3f018bcf.a82724",
         "output": true,
         "outputs": 1,
-        "x": 369,
-        "y": 559,
+        "x": 540,
+        "y": 560,
         "wires": [
             []
         ]
@@ -743,22 +724,6 @@
         "wires": []
     },
     {
-        "id": "67d023ff.2f7ecc",
-        "type": "debug",
-        "z": "3722000.5fe76",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1020,
-        "y": 120,
-        "wires": []
-    },
-    {
         "id": "e7e3aed1.cf34e",
         "type": "MSSQL",
         "z": "629f0c36.f7f324",
@@ -767,7 +732,7 @@
         "outField": "payload",
         "returnType": "1",
         "throwErrors": 1,
-        "query": "INSERT INTO [${SQLSERVER_TABLE}] (instrument_id,time,temp,cond,dissolved_oxygen_ppm,sal,soundv,ttime) \r\nvalues (@instrument_id,\r\n@time,\r\n@temp,\r\n@cond,\r\n@dissolved_oxygen_ppm,\r\n@sal,\r\n@soundv,\r\n@ttime);\r\n",
+        "query": "INSERT INTO [ctd_sbe16plus_data] (instrument_id,time,temp,cond,dissolved_oxygen_ppm,sal,soundv,ttime) \r\nvalues (@instrument_id,\r\n@time,\r\n@temp,\r\n@cond,\r\n@dissolved_oxygen_ppm,\r\n@sal,\r\n@soundv,\r\n@ttime);\r\n",
         "modeOpt": "",
         "modeOptType": "query",
         "queryOpt": "",
