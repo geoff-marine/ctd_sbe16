@@ -215,11 +215,11 @@
         "type": "MSSQL-CN",
         "tdsVersion": "7_4",
         "name": "devconnection",
-        "server": "MIDEVSQL01",
-        "port": "1433",
+        "server": "${SQLSERVER_SERVER}",
+        "port": "${SQLSERVER_PORT}",
         "encyption": true,
         "trustServerCertificate": true,
-        "database": "DATAMGT_MRI_CableObs",
+        "database": "${SQLSERVER_DATABASE}",
         "useUTC": true,
         "connectTimeout": "15000",
         "requestTimeout": "15000",
@@ -252,6 +252,22 @@
         "willTopic": "",
         "willQos": "0",
         "willPayload": ""
+    },
+    {
+        "id": "a51e405c.10f64",
+        "type": "MSSQL-CN",
+        "tdsVersion": "7_4",
+        "name": "SQL Server",
+        "server": "${SQLSERVER_SERVER}",
+        "port": "${SQLSERVER_PORT}",
+        "encyption": false,
+        "database": "${SQLSERVER_DATABASE}",
+        "useUTC": false,
+        "connectTimeout": "15000",
+        "requestTimeout": "15000",
+        "cancelTimeout": "5000",
+        "pool": "5",
+        "parseJSON": false
     },
     {
         "id": "3a926056.28e34",
@@ -304,7 +320,7 @@
         "type": "function",
         "z": "3722000.5fe76",
         "name": "parse ctd data string",
-        "func": "var parts = msg.payload.ctd.trim().split(\",\");\n    if(parts.length < 6){\n      //error.write(records[i],\"not enough fields\");\n      return null;\n    }\n\t\nvar time =  msg.payload.mi_timestamp;\nvar instrument_id = msg.payload.instrument_id;\nvar raw = msg.payload.ctd.trim();\nvar temp = parseFloat(parts[0]);\nvar cond =  parseFloat(parts[1]);\nvar dissolved_oxygen_ppm = parseFloat(parts[2]);\nvar sal = parseFloat(parts[3]);\nvar soundv = parseFloat(parts[4]);\nvar ttime = (String(parts[5]) + String(parts[6])).trim();\nvar newMsg = {\n       payload: {\n\t    time: time,\n\t\tinstrument_id: instrument_id,\n\t\traw: raw,\n\t\ttemp: temp,\n\t\tcond: cond,\n\t\tdissolved_oxygen_ppm: dissolved_oxygen_ppm,\n\t\tsal: sal,\n\t\tsoundv: soundv,\n\t\tttime: ttime\n\t   }\n    };\nreturn newMsg;",
+        "func": "var parts = msg.payload.ctd.trim().split(\",\");\n    if(parts.length < 6){\n      //error.write(records[i],\"not enough fields\");\n      return null;\n    }\n\t\nvar time =  msg.payload.mi_timestamp;\nvar instrument_id = msg.payload.instrument_id.trim();\nvar raw = msg.payload.ctd.trim();\nvar temp = parseFloat(parts[0]);\nvar cond =  parseFloat(parts[1]);\nvar dissolved_oxygen_ppm = parseFloat(parts[2]);\nvar sal = parseFloat(parts[3]);\nvar soundv = parseFloat(parts[4]);\nvar ttime = (String(parts[5]) + String(parts[6])).trim();\nvar newMsg = {\n       payload: {\n\t    time: time,\n\t\tinstrument_id: instrument_id,\n\t\traw: raw,\n\t\ttemp: temp,\n\t\tcond: cond,\n\t\tdissolved_oxygen_ppm: dissolved_oxygen_ppm,\n\t\tsal: sal,\n\t\tsoundv: soundv,\n\t\tttime: ttime\n\t   }\n    };\nreturn newMsg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -695,7 +711,7 @@
         "type": "function",
         "z": "629f0c36.f7f324",
         "name": "Convert to SQL",
-        "func": "var fields = [\"instrument_id\",\n\"time\",\n\"temp\",\n\"cond\",\n\"dissolved_oxygen_ppm\",\n\"sal\",\n\"soundv\", \n\"ttime\",\n\"crby\",\n\"created\"\n];\nvar field_names = fields.join(\",\");\nvar values = [];\nfor(var i=0;i<fields.length;i++){\n    values.push(msg.payload[fields[i]]);\n    fields[i] = \"$\"+(i+1);\n}\nvar placeholders = fields.join(\",\");\n\nvar query = \"INSERT INTO [ctd_sbe16plus_data] (\"+field_names+\") values (\"+placeholders+\", user_name(), sysdatetime())\";\nmsg.query = query,\nmsg.params = values\nreturn msg;",
+        "func": "var fields = [\"instrument_id\",\n\"time\",\n\"temp\",\n\"cond\",\n\"dissolved_oxygen_ppm\",\n\"sal\",\n\"soundv\", \n\"ttime\"\n];\nvar field_names = fields.join(\",\");\nvar values = [];\nfor(var i=0;i<fields.length;i++){\n    values.push(msg.payload[fields[i]]);\n    fields[i] = \"$\"+(i+1);\n}\nvar placeholders = fields.join(\",\");\n\nvar query = \"INSERT INTO [ctd_sbe16plus_data] (\"+field_names+\") values (\"+placeholders+\")\";\nmsg.query = query,\nmsg.params = values\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -749,20 +765,125 @@
         "mssqlCN": "3faf9b76.4621f4",
         "name": "sql server insert",
         "outField": "payload",
-        "returnType": "0",
+        "returnType": "1",
         "throwErrors": 1,
-        "query": "INSERT INTO [ctd_sbe16plus_data] (instrument_id) values (\"geoff\");\r\n",
+        "query": "INSERT INTO [${SQLSERVER_TABLE}] (instrument_id,time,temp,cond,dissolved_oxygen_ppm,sal,soundv,ttime) \r\nvalues (@instrument_id,\r\n@time,\r\n@temp,\r\n@cond,\r\n@dissolved_oxygen_ppm,\r\n@sal,\r\n@soundv,\r\n@ttime);\r\n",
         "modeOpt": "",
         "modeOptType": "query",
-        "queryOpt": "query",
-        "queryOptType": "msg",
-        "paramsOpt": "payload",
-        "paramsOptType": "msg",
+        "queryOpt": "",
+        "queryOptType": "editor",
+        "paramsOpt": "",
+        "paramsOptType": "editor",
         "rows": "rows",
         "rowsType": "msg",
-        "params": [],
-        "x": 610,
-        "y": 420,
+        "params": [
+            {
+                "output": false,
+                "name": "instrument_id",
+                "type": "VarChar(50)",
+                "valueType": "msg",
+                "value": "params[0]",
+                "options": {
+                    "nullable": true,
+                    "primary": false,
+                    "identity": false,
+                    "readOnly": false
+                }
+            },
+            {
+                "output": false,
+                "name": "time",
+                "type": "DateTime",
+                "valueType": "msg",
+                "value": "params[1]",
+                "options": {
+                    "nullable": true,
+                    "primary": false,
+                    "identity": false,
+                    "readOnly": false
+                }
+            },
+            {
+                "output": false,
+                "name": "temp",
+                "type": "Float",
+                "valueType": "msg",
+                "value": "params[2]",
+                "options": {
+                    "nullable": true,
+                    "primary": false,
+                    "identity": false,
+                    "readOnly": false
+                }
+            },
+            {
+                "output": false,
+                "name": "cond",
+                "type": "float",
+                "valueType": "msg",
+                "value": "params[3]",
+                "options": {
+                    "nullable": true,
+                    "primary": false,
+                    "identity": false,
+                    "readOnly": false
+                }
+            },
+            {
+                "output": false,
+                "name": "dissolved_oxygen_ppm",
+                "type": "float",
+                "valueType": "msg",
+                "value": "params[4]",
+                "options": {
+                    "nullable": true,
+                    "primary": false,
+                    "identity": false,
+                    "readOnly": false
+                }
+            },
+            {
+                "output": false,
+                "name": "sal",
+                "type": "float",
+                "valueType": "msg",
+                "value": "params[5]",
+                "options": {
+                    "nullable": true,
+                    "primary": false,
+                    "identity": false,
+                    "readOnly": false
+                }
+            },
+            {
+                "output": false,
+                "name": "soundv",
+                "type": "float",
+                "valueType": "msg",
+                "value": "params[6]",
+                "options": {
+                    "nullable": true,
+                    "primary": false,
+                    "identity": false,
+                    "readOnly": false
+                }
+            },
+            {
+                "output": false,
+                "name": "ttime",
+                "type": "DateTime",
+                "valueType": "msg",
+                "value": "params[7]",
+                "options": {
+                    "nullable": true,
+                    "primary": false,
+                    "identity": false,
+                    "readOnly": false
+                }
+            }
+        ],
+        "x": 680,
+        "y": 400,
         "wires": [
             [
                 "417697a1.4683d8"

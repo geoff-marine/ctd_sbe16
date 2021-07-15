@@ -24,9 +24,13 @@ process.env.KAFKA_BROKER_PORT = 29092;
 process.env.KAFKA_PRODUCER_TOPIC = "moxa-nodered-json";
 process.env.KAFKA_CONSUMER_TOPIC = "moxa-nodered";
 
-process.env.SQLSERVER_PWD = "!DM1nrTq3rT";
-process.env.SQLSERVER_DATABASE = "DATAMGT_MRI_CableObs";
-process.env.SQLSERVER_USER = "DATAMGT_nrtqc";
+process.env.SQLSERVER_PWD = "Password!";
+process.env.SQLSERVER_DATABASE = "TestDB";
+process.env.SQLSERVER_USER = "SA";
+process.env.SQLSERVER_SERVER = "172.18.0.12";
+process.env.SQLSERVER_PORT = 1433;
+process.env.SQLSERVER_TABLE = "ctd_sbe16plus_data";
+
 
 
 module.exports = {
