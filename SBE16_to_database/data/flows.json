@@ -195,7 +195,7 @@
         "hosts": [
             {
                 "host": "${KAFKA_BROKER_HOST}",
-                "port": "${KAFKA_BROKER_HOST}"
+                "port": 29092
             }
         ],
         "hostsEnvVar": "",
@@ -209,6 +209,49 @@
         "selfSign": true,
         "usetls": false,
         "useCredentials": false
+    },
+    {
+        "id": "3faf9b76.4621f4",
+        "type": "MSSQL-CN",
+        "tdsVersion": "7_4",
+        "name": "devconnection",
+        "server": "MIDEVSQL01",
+        "port": "1433",
+        "encyption": true,
+        "trustServerCertificate": true,
+        "database": "DATAMGT_MRI_CableObs",
+        "useUTC": true,
+        "connectTimeout": "15000",
+        "requestTimeout": "15000",
+        "cancelTimeout": "5000",
+        "pool": "5",
+        "parseJSON": false,
+        "enableArithAbort": true
+    },
+    {
+        "id": "df8c0b88.91b0a8",
+        "type": "MSSQL-CN",
+        "name": "Dev",
+        "server": "localhost",
+        "encyption": false,
+        "database": "Dev"
+    },
+    {
+        "id": "712b53e5.990dfc",
+        "type": "mqtt-broker",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "NodeRedSQLClient",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "15",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
     },
     {
         "id": "3a926056.28e34",
@@ -261,30 +304,18 @@
         "type": "function",
         "z": "3722000.5fe76",
         "name": "parse ctd data string",
-        "func": "var parts = msg.payload.ctd.trim().split(/\\s+/);\n    if(parts.length < 6){\n      //error.write(records[i],\"not enough fields\");\n      return null;\n    }\n\t\n//|  24.94  14.498  40.174  32.926 1503.0553 14:58:00.92M\t\n\t\nvar timestamp =  msg.payload.mi_timestamp;\nvar instrument_id = msg.payload.instrument_id;\nvar raw = msg.payload.ctd.trim();\nvar press = parseFloat(parts[0]);\nvar temp =  parseFloat(parts[1]);\nvar cond = parseFloat(parts[2]);\nvar sal = parseFloat(parts[3]);\nvar soundv = parseFloat(parts[4]);\nvar dissolved_oxygen_sat = parseFloat(parts[5]);\nvar dissolved_oxygen_ppm = parseFloat(parts[6]);\nvar ttime = parts[7];\nvar newMsg = {\n       payload: {\n\t    time: timestamp,\n\t\tinstrument_id: instrument_id,\n\t\traw: raw,\n\t\tpress: press,\n\t\ttemp: temp,\n\t\tcond: cond,\n\t\tsal: sal,\n\t\tsoundv: soundv,\n\t\tttime: ttime,\n\t\tdissolved_oxygen_ppm: dissolved_oxygen_ppm,\n\t\tdissolved_oxygen_sat: dissolved_oxygen_sat\n\t   }\n    };\nreturn newMsg;",
+        "func": "var parts = msg.payload.ctd.trim().split(\",\");\n    if(parts.length < 6){\n      //error.write(records[i],\"not enough fields\");\n      return null;\n    }\n\t\nvar time =  msg.payload.mi_timestamp;\nvar instrument_id = msg.payload.instrument_id;\nvar raw = msg.payload.ctd.trim();\nvar temp = parseFloat(parts[0]);\nvar cond =  parseFloat(parts[1]);\nvar dissolved_oxygen_ppm = parseFloat(parts[2]);\nvar sal = parseFloat(parts[3]);\nvar soundv = parseFloat(parts[4]);\nvar ttime = (String(parts[5]) + String(parts[6])).trim();\nvar newMsg = {\n       payload: {\n\t    time: time,\n\t\tinstrument_id: instrument_id,\n\t\traw: raw,\n\t\ttemp: temp,\n\t\tcond: cond,\n\t\tdissolved_oxygen_ppm: dissolved_oxygen_ppm,\n\t\tsal: sal,\n\t\tsoundv: soundv,\n\t\tttime: ttime\n\t   }\n    };\nreturn newMsg;",
         "outputs": 1,
         "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
         "x": 756,
         "y": 209,
         "wires": [
             [
-                "cc9a7251.33ee9"
-            ]
-        ]
-    },
-    {
-        "id": "cc9a7251.33ee9",
-        "type": "function",
-        "z": "3722000.5fe76",
-        "name": "Add Static Data",
-        "func": "msg.payload.lat = 53.22733;\nmsg.payload.lon = -9.26629;\nmsg.payload.depth = 20.00;\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 814,
-        "y": 323,
-        "wires": [
-            [
-                "d5eb0758.798d68"
+                "d5eb0758.798d68",
+                "67d023ff.2f7ecc"
             ]
         ]
     },
@@ -344,10 +375,16 @@
         "type": "Kafka Consumer",
         "z": "629f0c36.f7f324",
         "name": "kafka:ctd-json",
-        "broker": "2eda56d3.f62eba",
+        "broker": "a676d99.b4f1e28",
+        "regex": false,
         "topics": [
             {
                 "topic": "${KAFKA_PRODUCER_TOPIC}",
+                "offset": 0,
+                "partition": 0
+            },
+            {
+                "topic": "moxa-nodered-json",
                 "offset": 0,
                 "partition": 0
             }
@@ -362,6 +399,7 @@
         "encoding": "utf8",
         "keyEncoding": "utf8",
         "connectionType": "Consumer",
+        "convertToJson": false,
         "x": 165.5,
         "y": 69,
         "wires": [
@@ -404,8 +442,7 @@
         "y": 151,
         "wires": [
             [
-                "3a926056.28e34",
-                "eaa5c917.bbae48"
+                "3a926056.28e34"
             ]
         ]
     },
@@ -619,9 +656,7 @@
         "x": 232,
         "y": 189,
         "wires": [
-            [
-                "ed31688f.c3c778"
-            ]
+            []
         ]
     },
     {
@@ -641,21 +676,6 @@
         ]
     },
     {
-        "id": "d580c3dd.14816",
-        "type": "debug",
-        "z": "629f0c36.f7f324",
-        "name": "",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "x": 676,
-        "y": 482,
-        "wires": []
-    },
-    {
         "id": "2ab91264.b5bafe",
         "type": "postgrestor",
         "z": "629f0c36.f7f324",
@@ -667,9 +687,7 @@
         "x": 369,
         "y": 559,
         "wires": [
-            [
-                "d580c3dd.14816"
-            ]
+            []
         ]
     },
     {
@@ -677,19 +695,39 @@
         "type": "function",
         "z": "629f0c36.f7f324",
         "name": "Convert to SQL",
-        "func": "var fields = [\"instrument_id\",\"time\",\"lat\",\"lon\",\"depth\",\n\"press\", \"temp\", \"cond\", \"sal\", \"soundv\", \"ttime\", \"dissolved_oxygen_ppm\", \"dissolved_oxygen_sat\"\n];\nvar field_names = fields.join(\",\");\nvar values = [];\nfor(var i=0;i<fields.length;i++){\n    values.push(msg.payload[fields[i]]);\n    fields[i] = \"$\"+(i+1);\n}\nvar placeholders = fields.join(\",\");\nvar query = \"INSERT INTO das.ctd (\"+field_names+\") values (\"+placeholders+\")\";\nmsg.query = query,\nmsg.params = values\nreturn msg;",
+        "func": "var fields = [\"instrument_id\",\n\"time\",\n\"temp\",\n\"cond\",\n\"dissolved_oxygen_ppm\",\n\"sal\",\n\"soundv\", \n\"ttime\",\n\"crby\",\n\"created\"\n];\nvar field_names = fields.join(\",\");\nvar values = [];\nfor(var i=0;i<fields.length;i++){\n    values.push(msg.payload[fields[i]]);\n    fields[i] = \"$\"+(i+1);\n}\nvar placeholders = fields.join(\",\");\n\nvar query = \"INSERT INTO [ctd_sbe16plus_data] (\"+field_names+\") values (\"+placeholders+\", user_name(), sysdatetime())\";\nmsg.query = query,\nmsg.params = values\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
         "x": 300,
         "y": 444,
         "wires": [
             [
-                "2ab91264.b5bafe"
+                "e7e3aed1.cf34e"
             ]
         ]
     },
     {
-        "id": "eaa5c917.bbae48",
+        "id": "417697a1.4683d8",
+        "type": "debug",
+        "z": "629f0c36.f7f324",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 690,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "67d023ff.2f7ecc",
         "type": "debug",
         "z": "3722000.5fe76",
         "name": "",
@@ -700,8 +738,35 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 360,
-        "y": 140,
+        "x": 1020,
+        "y": 120,
         "wires": []
+    },
+    {
+        "id": "e7e3aed1.cf34e",
+        "type": "MSSQL",
+        "z": "629f0c36.f7f324",
+        "mssqlCN": "3faf9b76.4621f4",
+        "name": "sql server insert",
+        "outField": "payload",
+        "returnType": "0",
+        "throwErrors": 1,
+        "query": "INSERT INTO [ctd_sbe16plus_data] (instrument_id) values (\"geoff\");\r\n",
+        "modeOpt": "",
+        "modeOptType": "query",
+        "queryOpt": "query",
+        "queryOptType": "msg",
+        "paramsOpt": "payload",
+        "paramsOptType": "msg",
+        "rows": "rows",
+        "rowsType": "msg",
+        "params": [],
+        "x": 610,
+        "y": 420,
+        "wires": [
+            [
+                "417697a1.4683d8"
+            ]
+        ]
     }
 ]

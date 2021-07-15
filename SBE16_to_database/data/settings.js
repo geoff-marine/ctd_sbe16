@@ -24,6 +24,10 @@ process.env.KAFKA_BROKER_PORT = 29092;
 process.env.KAFKA_PRODUCER_TOPIC = "moxa-nodered-json";
 process.env.KAFKA_CONSUMER_TOPIC = "moxa-nodered";
 
+process.env.SQLSERVER_PWD = "!DM1nrTq3rT";
+process.env.SQLSERVER_DATABASE = "DATAMGT_MRI_CableObs";
+process.env.SQLSERVER_USER = "DATAMGT_nrtqc";
+
 
 module.exports = {
     // the tcp port that the Node-RED web server is listening on
