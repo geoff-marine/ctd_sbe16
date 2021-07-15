@@ -18,16 +18,11 @@
 // to make it available:
 var fs = require("fs");
 
-process.env.DEVICE_SERVER = "172.18.0.2";
-process.env.DEVICE_PORT = "49152";
-process.env.DEVICE_TOPIC = "";
-process.env.DEVICE_COMMAND_PORT = "49153";
-process.env.CSV_CONFIG = "https://raw.githubusercontent.com/geoff-marine/ctd_sbe16/master/SBE_CONFIG/sbe16_config.csv"
-process.env.CSV_COMMAND_CONFIG = "https://raw.githubusercontent.com/geoff-marine/ctd_sbe16/master/SBE_CONFIG/sbe16_config.txt"
-process.env.KAFKA_PRODUCER_HOST = "172.18.0.8";
-process.env.KAFKA_PRODUCER_PORT = 29092;
-process.env.KAFKA_PRODUCER_TOPIC = "moxa-nodered";
-process.env.KAFKA_CONSUMER_TOPIC = "";
+
+process.env.KAFKA_BROKER_HOST = "172.18.0.8";
+process.env.KAFKA_BROKER_PORT = 29092;
+process.env.KAFKA_PRODUCER_TOPIC = "moxa-nodered-json";
+process.env.KAFKA_CONSUMER_TOPIC = "moxa-nodered";
 
 
 module.exports = {

@@ -1,12 +1,5 @@
 [
     {
-        "id": "fb4375f3.2fb918",
-        "type": "tab",
-        "label": "CTD to Kafka",
-        "disabled": false,
-        "info": ""
-    },
-    {
         "id": "3722000.5fe76",
         "type": "tab",
         "label": "CTD - Parse",
@@ -16,7 +9,7 @@
     {
         "id": "629f0c36.f7f324",
         "type": "tab",
-        "label": "CTD-to-cassandra",
+        "label": "CTD-to-databases",
         "disabled": false,
         "info": ""
     },
@@ -35,17 +28,8 @@
         "info": ""
     },
     {
-        "id": "b26b1434.ad2a08",
-        "type": "CassandraDatabase",
-        "z": "",
-        "hosts": "172.17.1.113,172.17.1.114,172.17.1.115,172.17.1.116,172.17.1.117",
-        "port": "9042",
-        "keyspace": "das"
-    },
-    {
         "id": "8dbffc56.01a58",
         "type": "mqtt-broker",
-        "z": "",
         "name": "OLD mosca mqtt port 1683",
         "broker": "172.19.0.1",
         "port": "1683",
@@ -67,7 +51,6 @@
     {
         "id": "7b85fd4d.a1e704",
         "type": "Kafka Broker",
-        "z": "",
         "name": "dmkaf01-03",
         "hosts": [
             {
@@ -97,7 +80,6 @@
     {
         "id": "2eda56d3.f62eba",
         "type": "Kafka Broker",
-        "z": "",
         "name": "dmkaf01-03",
         "hosts": [
             {
@@ -125,9 +107,29 @@
         "usetls": false
     },
     {
+        "id": "2eda56d3.f62eba",
+        "type": "Kafka Broker",
+        "name": "Broker from settings.js",
+        "hosts": [
+            {
+                "host": "${KAFKA_BROKER_HOST}",
+                "port": "${KAFKA_BROKER_PORT}"
+            }
+        ],
+        "hostsEnvVar": "",
+        "connectTimeout": "10000",
+        "requestTimeout": "30000",
+        "autoConnect": "true",
+        "idleConnection": "5",
+        "reconnectOnIdle": "true",
+        "maxAsyncRequests": "10",
+        "checkInterval": "10",
+        "selfSign": true,
+        "usetls": false
+    },
+    {
         "id": "7cd5660f.93a7b8",
         "type": "mqtt-broker",
-        "z": "",
         "name": "NEW Mosquitto temp 1083",
         "broker": "172.19.0.1",
         "port": "1083",
@@ -149,7 +151,6 @@
     {
         "id": "dd148066.5b561",
         "type": "Kafka Broker",
-        "z": "",
         "name": "gconode05 (spiddal)",
         "hosts": [
             {
@@ -171,7 +172,6 @@
     {
         "id": "6a0d0b5f.b9af34",
         "type": "Kafka Broker",
-        "z": "",
         "name": "dmkaf01-03",
         "hosts": [
             {
@@ -201,7 +201,6 @@
     {
         "id": "3f018bcf.a82724",
         "type": "postgresDB",
-        "z": "",
         "name": "obs@172.17.1.86:5432/observatory",
         "host": "172.17.1.86",
         "hostFieldType": "str",
@@ -371,31 +370,6 @@
         "y": 279,
         "wires": [
             [
-                "be42d960.2f5808"
-            ]
-        ]
-    },
-    {
-        "id": "be42d960.2f5808",
-        "type": "switch",
-        "z": "3722000.5fe76",
-        "name": "Skip data before 2020-04-23",
-        "property": "payload.mi_timestamp",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "gt",
-                "v": "2020-04-23",
-                "vt": "str"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 1,
-        "x": 437,
-        "y": 211,
-        "wires": [
-            [
                 "aa2eedb5.6238c"
             ]
         ]
@@ -474,95 +448,6 @@
         ]
     },
     {
-        "id": "53f85455.79683c",
-        "type": "function",
-        "z": "629f0c36.f7f324",
-        "name": "Convert to CQL",
-        "func": "var fields = [\"instrument_id\",\"time\",\"lat\",\"lon\",\"depth\",\n\"press\", \"temp\", \"cond\", \"sal\", \"soundv\", \"ttime\", \"dissolved_oxygen_ppm\", \"dissolved_oxygen_sat\"\n];\nvar field_names = fields.join(\",\");\nvar values = [];\nfor(var i=0;i<fields.length;i++){\n    values.push(msg.payload[fields[i]]);\n    fields[i] = \"?\";\n}\nvar placeholders = fields.join(\",\");\nvar topic = \"INSERT INTO ctd (\"+field_names+\") values (\"+placeholders+\")\";\nvar newmsg = {\n    topic: topic,\n    payload: values\n}\nreturn newmsg;",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 274,
-        "y": 208,
-        "wires": [
-            [
-                "c3c42d16.b74f6"
-            ]
-        ]
-    },
-    {
-        "id": "c3c42d16.b74f6",
-        "type": "function",
-        "z": "629f0c36.f7f324",
-        "name": "prepare for batcher",
-        "func": "// the output of the previous node could go to cassandra,\n// having the topic of query, and payload of params.\n//\n// however we now want to batch the results.\n// batcher batches on topics, and collects payloads\n\nreturn {topic:\"cassandra\", payload:{query: msg.topic, params: msg.payload}};",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 463,
-        "y": 151,
-        "wires": [
-            [
-                "bc525659.207c08"
-            ]
-        ]
-    },
-    {
-        "id": "bc525659.207c08",
-        "type": "batcher",
-        "z": "629f0c36.f7f324",
-        "name": "Batch Cassandra Queries every 10 seconds",
-        "maxTopics": 1,
-        "maxMessagesPerTopic": "5000",
-        "maxDelay": "10000",
-        "x": 674,
-        "y": 212,
-        "wires": [
-            [
-                "60a48a3f.04f894"
-            ]
-        ]
-    },
-    {
-        "id": "60a48a3f.04f894",
-        "type": "function",
-        "z": "629f0c36.f7f324",
-        "name": "Prepare batch for cassandra",
-        "func": "// cassandra node expects the batch in the topic\nreturn {topic: msg.payload, payload: \"ignored\"};",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 740,
-        "y": 282,
-        "wires": [
-            [
-                "14e1cb91.1a1154",
-                "b0f25789.bd65a8"
-            ]
-        ]
-    },
-    {
-        "id": "14e1cb91.1a1154",
-        "type": "cassandra",
-        "z": "629f0c36.f7f324",
-        "mydb": "b26b1434.ad2a08",
-        "name": "Write to Cassandra",
-        "x": 855.5,
-        "y": 404,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "b0f25789.bd65a8",
-        "type": "debug",
-        "z": "629f0c36.f7f324",
-        "name": "",
-        "active": false,
-        "console": "false",
-        "complete": "topic",
-        "x": 1055,
-        "y": 263,
-        "wires": []
-    },
-    {
         "id": "4971e592.666d6c",
         "type": "json",
         "z": "629f0c36.f7f324",
@@ -574,7 +459,6 @@
         "y": 274,
         "wires": [
             [
-                "53f85455.79683c",
                 "9989808e.dbd2d"
             ]
         ]
@@ -583,9 +467,9 @@
         "id": "d34f44ca.d8d708",
         "type": "Kafka Producer",
         "z": "3722000.5fe76",
-        "name": "kafka:spiddal-ctd-json",
+        "name": "kafka:ctd-json",
         "broker": "2eda56d3.f62eba",
-        "topic": "spiddal-ctd-json",
+        "topic": "${KAFKA_PRODUCER_TOPIC}",
         "requireAcks": 1,
         "ackTimeoutMs": 100,
         "partitionerType": 0,
@@ -601,11 +485,11 @@
         "id": "3332f429.37723c",
         "type": "Kafka Consumer",
         "z": "629f0c36.f7f324",
-        "name": "kafka:spiddal-ctd-json",
-        "broker": "7b85fd4d.a1e704",
+        "name": "kafka:ctd-json",
+        "broker": "2eda56d3.f62eba",
         "topics": [
             {
-                "topic": "spiddal-ctd-json",
+                "topic": "${KAFKA_PRODUCER_TOPIC}",
                 "offset": 0,
                 "partition": 0
             }
@@ -629,32 +513,20 @@
         ]
     },
     {
-        "id": "7354834.cf9b97c",
-        "type": "Kafka Producer",
-        "z": "fb4375f3.2fb918",
-        "name": "kafka:spiddal-ctd",
-        "broker": "7b85fd4d.a1e704",
-        "topic": "spiddal-ctd",
-        "requireAcks": 1,
-        "ackTimeoutMs": 100,
-        "partitionerType": 0,
-        "key": "",
-        "partition": 0,
-        "attributes": 0,
-        "connectionType": "Producer",
-        "x": 696.5,
-        "y": 195,
-        "wires": []
-    },
-    {
         "id": "bb244523.2f8a68",
         "type": "Kafka Consumer",
         "z": "3722000.5fe76",
-        "name": "kafka:spiddal-ctd",
-        "broker": "7b85fd4d.a1e704",
+        "name": "devkafka",
+        "broker": "2eda56d3.f62eba",
+        "regex": false,
         "topics": [
             {
-                "topic": "spiddal-ctd",
+                "topic": "${KAFKA_CONSUMER_TOPIC}",
+                "offset": 0,
+                "partition": 0
+            },
+            {
+                "topic": "moxa-nodered",
                 "offset": 0,
                 "partition": 0
             }
@@ -669,7 +541,8 @@
         "encoding": "utf8",
         "keyEncoding": "utf8",
         "connectionType": "Consumer",
-        "x": 135.5,
+        "convertToJson": false,
+        "x": 115.5,
         "y": 151,
         "wires": [
             [
@@ -683,7 +556,7 @@
         "type": "Kafka Consumer Group",
         "z": "3a2a1bea.131384",
         "name": "kafka:spiddal-ctd",
-        "broker": "7b85fd4d.a1e704",
+        "broker": "2eda56d3.f62eba",
         "groupId": "noderedctd-spiddal-ctd",
         "sessionTimeout": 15000,
         "protocol": [
@@ -708,8 +581,8 @@
         "id": "b9b28179.6db8b",
         "type": "Kafka Consumer Group",
         "z": "3a2a1bea.131384",
-        "name": "kafka:spiddal-ctd-json",
-        "broker": "7b85fd4d.a1e704",
+        "name": "kafka:ctd-json",
+        "broker": "2eda56d3.f62eba",
         "groupId": "noderedctd-spiddal-ctd",
         "sessionTimeout": 15000,
         "protocol": [
@@ -720,7 +593,7 @@
         "commitOffsetsOnFirstJoin": "true",
         "outOfRangeOffset": "latest",
         "topics": [
-            "spiddal-ctd-json"
+            "${KAFKA_PRODUCER_TOPIC}"
         ],
         "x": 207,
         "y": 224,
@@ -767,52 +640,6 @@
         "wires": []
     },
     {
-        "id": "40ec64f1.086a6c",
-        "type": "Kafka Consumer",
-        "z": "fb4375f3.2fb918",
-        "name": "(spiddal) kafka:spiddal-ctd",
-        "broker": "dd148066.5b561",
-        "topics": [
-            {
-                "topic": "spiddal-ctd",
-                "offset": 0,
-                "partition": 0
-            }
-        ],
-        "groupId": "noderedctd01",
-        "autoCommit": "true",
-        "autoCommitIntervalMs": 5000,
-        "fetchMaxWaitMs": 100,
-        "fetchMinBytes": 1,
-        "fetchMaxBytes": 1048576,
-        "fromOffset": 0,
-        "encoding": "utf8",
-        "keyEncoding": "utf8",
-        "connectionType": "Consumer",
-        "x": 248.5,
-        "y": 211,
-        "wires": [
-            [
-                "2a33b085.08e4e",
-                "7354834.cf9b97c"
-            ]
-        ]
-    },
-    {
-        "id": "2a33b085.08e4e",
-        "type": "debug",
-        "z": "fb4375f3.2fb918",
-        "name": "",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "x": 589.5,
-        "y": 307,
-        "wires": []
-    },
-    {
         "id": "61c906b3.cc0948",
         "type": "function",
         "z": "3a2a1bea.131384",
@@ -825,93 +652,6 @@
         "wires": [
             [
                 "a30da05b.f391c"
-            ]
-        ]
-    },
-    {
-        "id": "f167c73f.1c9f98",
-        "type": "Kafka Consumer",
-        "z": "fb4375f3.2fb918",
-        "name": "kafka:spiddal-ctd",
-        "broker": "7b85fd4d.a1e704",
-        "topics": [
-            {
-                "topic": "spiddal-ctd",
-                "offset": 0,
-                "partition": 0
-            }
-        ],
-        "groupId": "noderedctd01-monitor",
-        "autoCommit": "true",
-        "autoCommitIntervalMs": 5000,
-        "fetchMaxWaitMs": 100,
-        "fetchMinBytes": 1,
-        "fetchMaxBytes": 1048576,
-        "fromOffset": 0,
-        "encoding": "utf8",
-        "keyEncoding": "utf8",
-        "connectionType": "Consumer",
-        "x": 698,
-        "y": 441,
-        "wires": [
-            [
-                "387e5595.f5d19a"
-            ]
-        ]
-    },
-    {
-        "id": "387e5595.f5d19a",
-        "type": "trigger",
-        "z": "fb4375f3.2fb918",
-        "op1": "",
-        "op2": "0",
-        "op1type": "nul",
-        "op2type": "str",
-        "duration": "5",
-        "extend": true,
-        "units": "min",
-        "reset": "",
-        "bytopic": "all",
-        "name": "trigger if no messages for 5 minutes",
-        "x": 942,
-        "y": 387,
-        "wires": [
-            [
-                "e589864e.2a38a8"
-            ]
-        ]
-    },
-    {
-        "id": "e589864e.2a38a8",
-        "type": "function",
-        "z": "fb4375f3.2fb918",
-        "name": "restart node-red",
-        "func": "console.log(\"restarting as no messages past 5 minutes\")\nglobal.get(\"process\").exit()",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 1196,
-        "y": 435,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "49193a8c.333a94",
-        "type": "inject",
-        "z": "fb4375f3.2fb918",
-        "name": "Inject on Startup",
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "repeat": "",
-        "crontab": "",
-        "once": true,
-        "onceDelay": 0.1,
-        "x": 685,
-        "y": 374,
-        "wires": [
-            [
-                "387e5595.f5d19a"
             ]
         ]
     },
@@ -1009,7 +749,7 @@
         "type": "Kafka Consumer Group",
         "z": "e6164d1a.fdb35",
         "name": "kafka spiddal-ctd",
-        "broker": "6a0d0b5f.b9af34",
+        "broker": "2eda56d3.f62eba",
         "groupId": "noderedctd2file02",
         "sessionTimeout": 15000,
         "protocol": [
@@ -1020,7 +760,7 @@
         "commitOffsetsOnFirstJoin": "true",
         "outOfRangeOffset": "latest",
         "topics": [
-            "spiddal-ctd"
+            "${KAFKA_CONSUMER_TOPIC}"
         ],
         "x": 232,
         "y": 189,
