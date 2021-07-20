@@ -36,6 +36,7 @@ process.env.POSTGRES_PORT = 5432;
 process.env.POSTGRES_DATABASE = "testdb";
 process.env.POSTGRES_USER = "postgres";
 process.env.POSTGRES_PWD = "password";
+process.env.POSTGRES_TABLE = "ctd_sbe16plus_data";
 
 
 module.exports = {
