@@ -1,0 +1,99 @@
+[
+    {
+        "id": "2c963ee.60e60c2",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "d71df165.1c478",
+        "type": "Kafka Consumer Group",
+        "z": "2c963ee.60e60c2",
+        "name": "Kafka Source",
+        "broker": "3f2dc4ca.d5c57c",
+        "groupId": "aGroup",
+        "sessionTimeout": 15000,
+        "protocol": [
+            "roundrobin"
+        ],
+        "encoding": "utf8",
+        "fromOffset": "latest",
+        "commitOffsetsOnFirstJoin": "true",
+        "outOfRangeOffset": "earliest",
+        "topics": [
+            "${KAFKA_SOURCE_TOPIC}"
+        ],
+        "x": 280,
+        "y": 360,
+        "wires": [
+            [
+                "2546ab6.d8c0b54"
+            ]
+        ]
+    },
+    {
+        "id": "2546ab6.d8c0b54",
+        "type": "Kafka Producer",
+        "z": "2c963ee.60e60c2",
+        "name": "Kafka Destination",
+        "broker": "7d3f6cf2.fa71e4",
+        "topic": "${KAFKA_DEST_TOPIC}",
+        "topicSlash2dot": false,
+        "requireAcks": 1,
+        "ackTimeoutMs": 100,
+        "partitionerType": 0,
+        "key": "",
+        "partition": 0,
+        "attributes": 0,
+        "connectionType": "Producer",
+        "convertFromJson": false,
+        "x": 680,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "3f2dc4ca.d5c57c",
+        "type": "Kafka Broker",
+        "name": "Kafka Source",
+        "hosts": [
+            {
+                "host": "${KAFKA_SOURCE_HOST}",
+                "port": "${KAFKA_SOURCE_PORT}"
+            }
+        ],
+        "hostsEnvVar": "",
+        "connectTimeout": "1000",
+        "requestTimeout": "30000",
+        "autoConnect": "true",
+        "idleConnection": "5",
+        "reconnectOnIdle": "true",
+        "maxAsyncRequests": "10",
+        "checkInterval": "10",
+        "selfSign": true,
+        "usetls": false,
+        "useCredentials": false
+    },
+    {
+        "id": "7d3f6cf2.fa71e4",
+        "type": "Kafka Broker",
+        "name": "Kafka Destination",
+        "hosts": [
+            {
+                "host": "${KAFKA_DEST_HOST}",
+                "port": "${KAFKA_DEST_PORT}"
+            }
+        ],
+        "hostsEnvVar": "",
+        "connectTimeout": "10000",
+        "requestTimeout": "30000",
+        "autoConnect": "true",
+        "idleConnection": "5",
+        "reconnectOnIdle": "true",
+        "maxAsyncRequests": "10",
+        "checkInterval": "10",
+        "selfSign": true,
+        "usetls": false,
+        "useCredentials": false
+    }
+]
