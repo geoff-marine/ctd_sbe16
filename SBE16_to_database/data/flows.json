@@ -666,7 +666,7 @@
         "y": 560,
         "wires": [
             [
-                "417697a1.4683d8"
+                "9a30d28a.f6797"
             ]
         ]
     },
@@ -675,7 +675,7 @@
         "type": "function",
         "z": "629f0c36.f7f324",
         "name": "Convert to SQL",
-        "func": "var fields = [\"instrument_id\",\n\"time\",\n\"temp\",\n\"cond\",\n\"dissolved_oxygen_ppm\",\n\"sal\",\n\"soundv\", \n\"ttime\"\n];\nvar field_names = fields.join(\",\");\nvar values = [];\nfor(var i=0;i<fields.length;i++){\n    values.push(msg.payload[fields[i]]);\n    fields[i] = \"$\"+(i+1);\n}\nvar placeholders = fields.join(\",\");\n\nvar query = \"INSERT INTO ctd_sbe16plus_data (\"+field_names+\") values (\"+placeholders+\")\";\nmsg.query = query,\nmsg.params = values\nreturn msg;",
+        "func": "var fields = [\"instrument_id\",\n\"time\",\n\"temp\",\n\"cond\",\n\"dissolved_oxygen_ppm\",\n\"sal\",\n\"soundv\", \n\"ttime\"\n];\nvar field_names = fields.join(\",\");\nvar values = [];\nfor(var i=0;i<fields.length;i++){\n    values.push(msg.payload[fields[i]]);\n    fields[i] = \"$\"+(i+1);\n}\nvar placeholders = fields.join(\",\");\n\nlet postgresTable = env.get(\"POSTGRES_TABLE\");\n\nvar query = \"INSERT INTO \"+postgresTable+\" (\"+field_names+\") values (\"+placeholders+\")\";\nmsg.query = query,\nmsg.params = values\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -691,23 +691,6 @@
         ]
     },
     {
-        "id": "417697a1.4683d8",
-        "type": "debug",
-        "z": "629f0c36.f7f324",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 930,
-        "y": 520,
-        "wires": []
-    },
-    {
         "id": "e7e3aed1.cf34e",
         "type": "MSSQL",
         "z": "629f0c36.f7f324",
@@ -716,7 +699,7 @@
         "outField": "payload",
         "returnType": "1",
         "throwErrors": 1,
-        "query": "INSERT INTO [ctd_sbe16plus_data] (instrument_id,time,temp,cond,dissolved_oxygen_ppm,sal,soundv,ttime) \r\nvalues (@instrument_id,\r\n@time,\r\n@temp,\r\n@cond,\r\n@dissolved_oxygen_ppm,\r\n@sal,\r\n@soundv,\r\n@ttime);\r\n",
+        "query": "INSERT INTO {{{SQLSERVER_TABLE}}} (instrument_id,time,temp,cond,dissolved_oxygen_ppm,sal,soundv,ttime) \r\nvalues (@instrument_id,\r\n@time,\r\n@temp,\r\n@cond,\r\n@dissolved_oxygen_ppm,\r\n@sal,\r\n@soundv,\r\n@ttime);\r\n",
         "modeOpt": "",
         "modeOptType": "query",
         "queryOpt": "",
@@ -836,5 +819,21 @@
         "wires": [
             []
         ]
+    },
+    {
+        "id": "9a30d28a.f6797",
+        "type": "debug",
+        "z": "629f0c36.f7f324",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 860,
+        "y": 600,
+        "wires": []
     }
 ]
