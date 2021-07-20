@@ -72,24 +72,26 @@
     {
         "id": "3f018bcf.a82724",
         "type": "postgresDB",
-        "name": "obs@172.17.1.86:5432/observatory",
-        "host": "172.17.1.86",
+        "name": "Postgres from settings.js",
+        "host": "${POSTGRES_HOST}",
         "hostFieldType": "str",
-        "port": "5432",
+        "port": "${POSTGRES_PORT}",
         "portFieldType": "num",
-        "database": "observatory",
+        "database": "${POSTGRES_DATABASE}",
         "databaseFieldType": "str",
         "ssl": "false",
         "sslFieldType": "bool",
-        "max": "3",
+        "max": "1",
         "maxFieldType": "num",
         "min": "1",
         "minFieldType": "num",
         "idle": "1000",
         "idleFieldType": "num",
-        "user": "obs",
+        "connectionTimeout": "",
+        "connectionTimeoutFieldType": "num",
+        "user": "${POSTGRES_USER}",
         "userFieldType": "str",
-        "password": "R4inCheck",
+        "password": "${POSTGRES_PWD}",
         "passwordFieldType": "str"
     },
     {
@@ -214,7 +216,7 @@
         "id": "3faf9b76.4621f4",
         "type": "MSSQL-CN",
         "tdsVersion": "7_4",
-        "name": "devconnection",
+        "name": "SQL Server from settings.js",
         "server": "${SQLSERVER_SERVER}",
         "port": "${SQLSERVER_PORT}",
         "encyption": true,
@@ -354,7 +356,7 @@
         "id": "d34f44ca.d8d708",
         "type": "Kafka Producer",
         "z": "3722000.5fe76",
-        "name": "kafka:to json",
+        "name": "kafka:to json from settings.js",
         "broker": "a676d99.b4f1e28",
         "topic": "${KAFKA_PRODUCER_TOPIC}",
         "topicSlash2dot": false,
@@ -373,7 +375,7 @@
         "id": "3332f429.37723c",
         "type": "Kafka Consumer",
         "z": "629f0c36.f7f324",
-        "name": "kafka:ctd-json",
+        "name": "kafka:ctd-json from settings.js",
         "broker": "a676d99.b4f1e28",
         "regex": false,
         "topics": [
@@ -411,7 +413,7 @@
         "id": "bb244523.2f8a68",
         "type": "Kafka Consumer",
         "z": "3722000.5fe76",
-        "name": "read kafka ",
+        "name": "kafka consumer from settings.js ",
         "broker": "a676d99.b4f1e28",
         "regex": false,
         "topics": [
@@ -684,7 +686,9 @@
         "x": 540,
         "y": 560,
         "wires": [
-            []
+            [
+                "417697a1.4683d8"
+            ]
         ]
     },
     {
@@ -692,7 +696,7 @@
         "type": "function",
         "z": "629f0c36.f7f324",
         "name": "Convert to SQL",
-        "func": "var fields = [\"instrument_id\",\n\"time\",\n\"temp\",\n\"cond\",\n\"dissolved_oxygen_ppm\",\n\"sal\",\n\"soundv\", \n\"ttime\"\n];\nvar field_names = fields.join(\",\");\nvar values = [];\nfor(var i=0;i<fields.length;i++){\n    values.push(msg.payload[fields[i]]);\n    fields[i] = \"$\"+(i+1);\n}\nvar placeholders = fields.join(\",\");\n\nvar query = \"INSERT INTO [ctd_sbe16plus_data] (\"+field_names+\") values (\"+placeholders+\")\";\nmsg.query = query,\nmsg.params = values\nreturn msg;",
+        "func": "var fields = [\"instrument_id\",\n\"time\",\n\"temp\",\n\"cond\",\n\"dissolved_oxygen_ppm\",\n\"sal\",\n\"soundv\", \n\"ttime\"\n];\nvar field_names = fields.join(\",\");\nvar values = [];\nfor(var i=0;i<fields.length;i++){\n    values.push(msg.payload[fields[i]]);\n    fields[i] = \"$\"+(i+1);\n}\nvar placeholders = fields.join(\",\");\n\nvar query = \"INSERT INTO ctd_sbe16plus_data (\"+field_names+\") values (\"+placeholders+\")\";\nmsg.query = query,\nmsg.params = values\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -702,7 +706,8 @@
         "y": 444,
         "wires": [
             [
-                "e7e3aed1.cf34e"
+                "e7e3aed1.cf34e",
+                "2ab91264.b5bafe"
             ]
         ]
     },
@@ -719,8 +724,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 690,
-        "y": 240,
+        "x": 930,
+        "y": 520,
         "wires": []
     },
     {
@@ -850,9 +855,7 @@
         "x": 680,
         "y": 400,
         "wires": [
-            [
-                "417697a1.4683d8"
-            ]
+            []
         ]
     }
 ]

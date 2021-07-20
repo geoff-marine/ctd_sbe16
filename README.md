@@ -18,3 +18,17 @@
     CREATE TABLE ctd_sbe16plus_data (instrument_id VARCHAR(5),time DATETIME,cond FLOAT,press FLOAT,sal FLOAT,soundv FLOAT,temp FLOAT,dissolved_oxygen_ppm FLOAT,dissolved_oxygen_sat FLOAT,ttime DATETIME,created DATETIME,modified DATETIME,crby VARCHAR(50),modby VARCHAR(50))
     GO
 
+
+# Postgres with timescaleDB
+
+    docker run -d --name timescaledb --network sbe16 -p 5432:5432 -e POSTGRES_PASSWORD=password timescale/timescaledb:latest-pg12
+
+ ## Access the database
+
+    docker exec -it timescaledb psql -U postgres
+
+ ## Create test db an tables
+
+    CREATE DATABASE testdb;
+    \c testdb;
+    CREATE TABLE ctd_sbe16plus_data (instrument_id VARCHAR(5),time TIMESTAMP,cond FLOAT,press FLOAT,sal FLOAT,soundv FLOAT,temp FLOAT,dissolved_oxygen_ppm FLOAT,dissolved_oxygen_sat FLOAT,ttime TIMESTAMP,created TIMESTAMP,modified TIMESTAMP,crby VARCHAR(50),modby VARCHAR(50));

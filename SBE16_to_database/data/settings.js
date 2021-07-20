@@ -31,6 +31,11 @@ process.env.SQLSERVER_SERVER = "172.18.0.12";
 process.env.SQLSERVER_PORT = 1433;
 process.env.SQLSERVER_TABLE = "ctd_sbe16plus_data";
 
+process.env.POSTGRES_HOST = "172.18.0.13";
+process.env.POSTGRES_PORT = 5432;
+process.env.POSTGRES_DATABASE = "testdb";
+process.env.POSTGRES_USER = "postgres";
+process.env.POSTGRES_PWD = "password";
 
 
 module.exports = {
