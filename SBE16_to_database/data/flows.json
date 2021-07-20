@@ -383,11 +383,6 @@
                 "topic": "${KAFKA_PRODUCER_TOPIC}",
                 "offset": 0,
                 "partition": 0
-            },
-            {
-                "topic": "moxa-nodered-json",
-                "offset": 0,
-                "partition": 0
             }
         ],
         "groupId": "noderedctd01",
