@@ -22,7 +22,7 @@ var fs = require("fs");
 process.env.KAFKA_BROKER_HOST = "172.18.0.8";
 process.env.KAFKA_BROKER_PORT = 29092;
 process.env.KAFKA_PRODUCER_TOPIC = "moxa-nodered-json";
-process.env.KAFKA_CONSUMER_TOPIC = "moxa-nodered";
+process.env.KAFKA_CONSUMER_TOPIC = "mi_site_b";
 
 process.env.SQLSERVER_PWD = "Password!";
 process.env.SQLSERVER_DATABASE = "TestDB";
