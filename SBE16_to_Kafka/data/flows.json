@@ -51,8 +51,7 @@
         "y": 120,
         "wires": [
             [
-                "addf79e2.df5538",
-                "f65da627.d136d8"
+                "addf79e2.df5538"
             ]
         ]
     },
@@ -61,14 +60,18 @@
         "type": "function",
         "z": "77c7c30f.0fd61c",
         "name": "Add device and timestamp",
-        "func": "let config = flow.get(\"config\");\nif(!config){\n    console.log(\"config is not set, this won't work\")\n}\nlet device = config.id;\n\nlet parts = [new Date().toISOString(),device,(\"\"+msg.payload).trim()];\nmsg.payload = parts.join(\"|\");\nflow.set('latest',{payload:msg.payload,time:new Date().getTime()});\nreturn msg;",
+        "func": "let device = env.get(\"SENSOR_ID\");\n\nlet parts = [new Date().toISOString(),device,(\"\"+msg.payload).trim()];\nmsg.payload = parts.join(\"|\");\nflow.set('latest',{payload:msg.payload,time:new Date().getTime()});\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
         "x": 570,
         "y": 220,
         "wires": [
             [
-                "7818e38c.25462c"
+                "7818e38c.25462c",
+                "f65da627.d136d8"
             ]
         ]
     },
@@ -91,153 +94,6 @@
         "wires": []
     },
     {
-        "id": "b1b9ccc3.2059a",
-        "type": "inject",
-        "z": "77c7c30f.0fd61c",
-        "name": "Inject on starup",
-        "repeat": "",
-        "crontab": "",
-        "once": true,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 200,
-        "y": 520,
-        "wires": [
-            [
-                "4a80bdf3.1812c4"
-            ]
-        ]
-    },
-    {
-        "id": "4a80bdf3.1812c4",
-        "type": "http request",
-        "z": "77c7c30f.0fd61c",
-        "name": "Fetch device configuration",
-        "method": "GET",
-        "ret": "txt",
-        "paytoqs": "ignore",
-        "url": "${CSV_CONFIG}",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "authType": "",
-        "x": 310,
-        "y": 660,
-        "wires": [
-            [
-                "b6a6cc15.a79d"
-            ]
-        ]
-    },
-    {
-        "id": "b6a6cc15.a79d",
-        "type": "csv",
-        "z": "77c7c30f.0fd61c",
-        "name": "Parse configuration",
-        "sep": ",",
-        "hdrin": true,
-        "hdrout": "",
-        "multi": "mult",
-        "ret": "\\n",
-        "temp": "",
-        "skip": "0",
-        "strings": true,
-        "x": 510,
-        "y": 580,
-        "wires": [
-            [
-                "afad29d8.d26af8"
-            ]
-        ]
-    },
-    {
-        "id": "f54ac812.e444c8",
-        "type": "file in",
-        "z": "77c7c30f.0fd61c",
-        "name": "Read settings file",
-        "filename": "/data/settings.js",
-        "format": "utf8",
-        "chunk": false,
-        "sendError": false,
-        "encoding": "none",
-        "x": 1090,
-        "y": 640,
-        "wires": [
-            [
-                "981e5839.accc48"
-            ]
-        ]
-    },
-    {
-        "id": "afad29d8.d26af8",
-        "type": "function",
-        "z": "77c7c30f.0fd61c",
-        "name": "Set current config",
-        "func": "let now = new Date().toISOString();\nlet configs = msg.payload.filter(x=>x.start_date<now && ((!x.end_date) || x.end_date>now))\nif(configs.length > 0){\n    let config = configs[0];\n    flow.set(\"config\",config);\n    msg.payload = config;\n    node.send(msg);\n}\n",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 670,
-        "y": 640,
-        "wires": [
-            [
-                "2b1146e4.c2039a"
-            ]
-        ]
-    },
-    {
-        "id": "2b1146e4.c2039a",
-        "type": "function",
-        "z": "77c7c30f.0fd61c",
-        "name": "Has server address or port changed",
-        "func": "let process = global.get(\"process\");\nif( \n    (msg.payload.moxa_server && `${msg.payload.moxa_server}` !== `${process.env.DEVICE_SERVER}`)\n || \n     (msg.payload.moxa_port && `${msg.payload.moxa_port}` !== `${process.env.DEVICE_PORT}`)\n || \n     (msg.payload.moxa_port && `${msg.payload.moxa_command_port}` !== `${process.env.DEVICE_COMMAND_PORT}`)     \n\n )\n{\n    flow.set(\"DEVICE_SERVER\",msg.payload.moxa_server);\n    flow.set(\"DEVICE_PORT\",msg.payload.moxa_port);\n    flow.set(\"DEVICE_COMMAND_PORT\",msg.payload.moxa_command_port);\n    send(msg);\n}\n",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 920,
-        "y": 580,
-        "wires": [
-            [
-                "f54ac812.e444c8"
-            ]
-        ]
-    },
-    {
-        "id": "981e5839.accc48",
-        "type": "function",
-        "z": "77c7c30f.0fd61c",
-        "name": "Update settings",
-        "func": "let DEVICE_SERVER = flow.get(\"DEVICE_SERVER\");\nlet DEVICE_PORT = flow.get(\"DEVICE_PORT\");\nlet DEVICE_COMMAND_PORT = flow.get(\"DEVICE_COMMAND_PORT\");\nif(DEVICE_SERVER && DEVICE_PORT && DEVICE_COMMAND_PORT){\n    let before = msg.payload;\n    let lines = msg.payload.split(\"\\n\");\n    const regex_server = /^\\s*process.env.DEVICE_SERVER\\s*=/\n    const regex_port= /^\\s*process.env.DEVICE_PORT\\s*=/\n    const regex_command_port= /^\\s*process.env.DEVICE_COMMAND_PORT\\s*=/\n    lines = lines.map(line=>{\n        if(line.match(regex_server)){\n            return `process.env.DEVICE_SERVER = \"${DEVICE_SERVER}\";`;           \n        }else if(line.match(regex_port)){\n            return `process.env.DEVICE_PORT = \"${DEVICE_PORT}\";`;   \n        }else if(line.match(regex_command_port)){\n            return `process.env.DEVICE_COMMAND_PORT = \"${DEVICE_COMMAND_PORT}\";`;   \n        }else{\n            return line;\n        }\n    });\n    msg.payload = lines.join(\"\\n\");\n    if(before !== msg.payload){\n        send(msg);    \n    }\n}\n",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 1240,
-        "y": 580,
-        "wires": [
-            [
-                "7f062d98.93cf94"
-            ]
-        ]
-    },
-    {
-        "id": "7f062d98.93cf94",
-        "type": "file",
-        "z": "77c7c30f.0fd61c",
-        "name": "rewrite settings file",
-        "filename": "/data/settings.js",
-        "appendNewline": false,
-        "createDir": false,
-        "overwriteFile": "true",
-        "encoding": "none",
-        "x": 1370,
-        "y": 640,
-        "wires": [
-            []
-        ]
-    },
-    {
         "id": "f65da627.d136d8",
         "type": "debug",
         "z": "77c7c30f.0fd61c",
@@ -247,7 +103,7 @@
         "console": false,
         "tostatus": false,
         "complete": "false",
-        "x": 540,
+        "x": 930,
         "y": 60,
         "wires": []
     }
