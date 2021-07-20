@@ -74,11 +74,11 @@
         "type": "postgresDB",
         "name": "Postgres from settings.js",
         "host": "${POSTGRES_HOST}",
-        "hostFieldType": "str",
+        "hostFieldType": "env",
         "port": "${POSTGRES_PORT}",
-        "portFieldType": "num",
+        "portFieldType": "env",
         "database": "${POSTGRES_DATABASE}",
-        "databaseFieldType": "str",
+        "databaseFieldType": "env",
         "ssl": "false",
         "sslFieldType": "bool",
         "max": "1",
@@ -90,9 +90,9 @@
         "connectionTimeout": "",
         "connectionTimeoutFieldType": "num",
         "user": "${POSTGRES_USER}",
-        "userFieldType": "str",
+        "userFieldType": "env",
         "password": "${POSTGRES_PWD}",
-        "passwordFieldType": "str"
+        "passwordFieldType": "env"
     },
     {
         "id": "266cbfe8.15f78",
@@ -201,7 +201,7 @@
             }
         ],
         "hostsEnvVar": "",
-        "connectTimeout": "10000",
+        "connectTimeout": "1000",
         "requestTimeout": "30000",
         "autoConnect": "true",
         "idleConnection": "5",
@@ -451,8 +451,8 @@
         "id": "a7aa4b88.a6ffe8",
         "type": "Kafka Consumer Group",
         "z": "3a2a1bea.131384",
-        "name": "kafka:spiddal-ctd",
-        "broker": "2eda56d3.f62eba",
+        "name": "kafka: consumer from settings.js",
+        "broker": "a676d99.b4f1e28",
         "groupId": "noderedctd-spiddal-ctd",
         "sessionTimeout": 15000,
         "protocol": [
@@ -463,9 +463,9 @@
         "commitOffsetsOnFirstJoin": "true",
         "outOfRangeOffset": "latest",
         "topics": [
-            "spiddal-ctd"
+            "${KAFKA_CONSUMER_TOPIC}"
         ],
-        "x": 198.5,
+        "x": 248.5,
         "y": 127,
         "wires": [
             []
@@ -475,8 +475,8 @@
         "id": "b9b28179.6db8b",
         "type": "Kafka Consumer Group",
         "z": "3a2a1bea.131384",
-        "name": "kafka:ctd-json",
-        "broker": "2eda56d3.f62eba",
+        "name": "kafka:ctd-json from settings.js",
+        "broker": "a676d99.b4f1e28",
         "groupId": "noderedctd-spiddal-ctd",
         "sessionTimeout": 15000,
         "protocol": [
@@ -489,7 +489,7 @@
         "topics": [
             "${KAFKA_PRODUCER_TOPIC}"
         ],
-        "x": 207,
+        "x": 257,
         "y": 224,
         "wires": [
             []
@@ -504,8 +504,8 @@
         "qos": "1",
         "retain": "false",
         "broker": "7cd5660f.93a7b8",
-        "x": 587.5,
-        "y": 119,
+        "x": 840,
+        "y": 120,
         "wires": []
     },
     {
@@ -542,7 +542,9 @@
         "x": 518,
         "y": 62,
         "wires": [
-            []
+            [
+                "a30da05b.f391c"
+            ]
         ]
     },
     {
@@ -610,36 +612,11 @@
         ]
     },
     {
-        "id": "ed31688f.c3c778",
-        "type": "switch",
-        "z": "e6164d1a.fdb35",
-        "name": "Skip data before 2020-09-10",
-        "property": "payload",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "gt",
-                "v": "2020-09-10",
-                "vt": "str"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 1,
-        "x": 361,
-        "y": 303,
-        "wires": [
-            [
-                "ddfa69af.e44dd8"
-            ]
-        ]
-    },
-    {
         "id": "e72a2034.c1d4f",
         "type": "Kafka Consumer Group",
         "z": "e6164d1a.fdb35",
-        "name": "kafka spiddal-ctd",
-        "broker": "2eda56d3.f62eba",
+        "name": "kafka consumer from settings.js",
+        "broker": "a676d99.b4f1e28",
         "groupId": "noderedctd2file02",
         "sessionTimeout": 15000,
         "protocol": [
@@ -652,10 +629,12 @@
         "topics": [
             "${KAFKA_CONSUMER_TOPIC}"
         ],
-        "x": 232,
+        "x": 282,
         "y": 189,
         "wires": [
-            []
+            [
+                "ddfa69af.e44dd8"
+            ]
         ]
     },
     {
