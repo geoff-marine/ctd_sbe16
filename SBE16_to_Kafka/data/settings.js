@@ -24,7 +24,8 @@ process.env.DEVICE_TOPIC = "";
 
 process.env.KAFKA_PRODUCER_HOST = "172.18.0.8";
 process.env.KAFKA_PRODUCER_PORT = 29092;
-process.env.KAFKA_PRODUCER_TOPIC = "mi_site_a";
+process.env.KAFKA_PRODUCER_TOPIC = "moxa-nodered";
+process.env.KAFKA_CONSUMER_TOPIC = "";
 
 process.env.SENSOR_ID = "4239";
 
